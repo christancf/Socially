@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Socially</string>
+    <string name="add_post_cd">Add Post</string>
+    <string name="home_cd">Home</string>
+    <string name="users_cd">Users</string>
+    <string name="chat_cd">Chat</string>
+    <string name="profile_cd">Profile</string>
 </resources>
