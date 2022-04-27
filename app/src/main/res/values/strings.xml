@@ -107,6 +107,7 @@
     <string name="message_status_delivered">Delivered</string>
     <string name="message_status_seen">Seen</string>
     <string name="chat_list_header">Chats</string>
+    <string name="type_a_message">Type a message</string>
     <string name="delete_prompt_txt">Are you sure you want to delete this message?</string>
     <string name="delete_prompt_no">No</string>
     <string name="delete_prompt_delete">Delete</string>

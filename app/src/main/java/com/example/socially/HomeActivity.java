@@ -2,9 +2,12 @@ package com.example.socially;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.socially.activities.ChatActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -35,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         ChatIV.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ChatActivity.class));
         });
         ProfileIV.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Profile", Toast.LENGTH_SHORT).show();
