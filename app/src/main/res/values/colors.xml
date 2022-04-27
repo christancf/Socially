@@ -5,4 +5,6 @@
     <color name="btn_orange">#FF8C00</color>
     <color name="status_orange">#F49015</color>
     <color name="add_button">#FFCF73</color>
+    <color name="chat_msg">#CBB4A3</color>
+    <color name="chat_msg_other">#E5E5E5</color>
 </resources>

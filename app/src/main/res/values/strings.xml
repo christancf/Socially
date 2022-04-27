@@ -5,4 +5,6 @@
     <string name="users_cd">Users</string>
     <string name="chat_cd">Chat</string>
     <string name="profile_cd">Profile</string>
+    <string name="chat_list_text">Chat List</string>
+    <string name="type_a_message">Type a message</string>
 </resources>

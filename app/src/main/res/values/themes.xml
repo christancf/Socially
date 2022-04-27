@@ -10,6 +10,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/status_orange</item>
         <!-- Customize your theme here. -->
     </style>
+    <!--    Theme Without ActionBar-->
     <style name="Theme.Socially.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/btn_orange</item>
