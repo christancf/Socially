@@ -5,4 +5,14 @@
     <string name="users_cd">Users</string>
     <string name="chat_cd">Chat</string>
     <string name="profile_cd">Profile</string>
+    <string name="btn_next">Next</string>
+    <string name="txt_splash_screen_3_heading">Communicate with your loved ones</string>
+    <string name="txt_connect">Connect</string>
+    <string name="txt_with">with</string>
+    <string name="txt_people">People</string>
+    <string name="btn_get_started">Get Started</string>
+    <string name="txt_dot">.</string>
+    <string name="txt_socialize">Socialize</string>
+    <string name="btn_register">Register</string>
+    <string name="btn_login">Login</string>
 </resources>
