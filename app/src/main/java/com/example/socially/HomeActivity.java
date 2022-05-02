@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.example.socially.activities.ChatActivity;
+
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
@@ -57,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         });
         ChatIV.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, ChatActivity.class));
         });
         ProfileIV.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));

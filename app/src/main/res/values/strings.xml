@@ -5,14 +5,127 @@
     <string name="users_cd">Users</string>
     <string name="chat_cd">Chat</string>
     <string name="profile_cd">Profile</string>
-    <string name="btn_next">Next</string>
-    <string name="txt_splash_screen_3_heading">Communicate with your loved ones</string>
-    <string name="txt_connect">Connect</string>
-    <string name="txt_with">with</string>
-    <string name="txt_people">People</string>
-    <string name="btn_get_started">Get Started</string>
-    <string name="txt_dot">.</string>
-    <string name="txt_socialize">Socialize</string>
-    <string name="btn_register">Register</string>
+
+    //Post Management
+    <string name="txt_post_feed">Post Feed</string>
+    <string name="btn_like_post">Like</string>
+    <string name="btn_comment_post">Comment</string>
+    <string name="btn_share_post">Share</string>
+    <string name="txt_create_post">Create Post</string>
+    <string name="btn_publish_post">Post</string>
+    <string name="et_post_content">What\'s on your mind?</string>
+    <string name="btn_edit_post">Edit Post</string>
+    <string name="btn_delete_post">Delete Post</string>
+    <string name="btn_hide_post">Hide Post</string>
+    <string name="txt_edit_post">Edit Post</string>
+    <string name="btn_save_post">Save</string>
+    <string name="txt_delete_post_confirmation_msg">Are you sure you want to delete this post?</string>
+    <string name="btn_delete_post_no">No</string>
+    <string name="btn_delete_post_delete">Delete</string>
+    <string name="txt_liked_by_post">Liked by</string>
+    <string name="btn_view_profile_liked_by">View Profile</string>
+    <string name="btn_chat_liked_by">Chat</string>
+
+    //Comment Management
+    <string name="txt_delete_comment_confirmation_msg">Are you sure you want to delete this comment?</string>
+    <string name="btn_delete_comment_cancel">Cancel</string>
+    <string name="btn_delete_comment_delete">Delete</string>
+    <string name="txt_edit_comment">Edit</string>
+    <string name="btn_edit_comment_cancel">Cancel</string>
+    <string name="btn_edit_comment_update">Update</string>
+    <string name="txt_comments">Comments</string>
+    <string name="btn_edit_comment">edit</string>
+    <string name="btn_delete_comment">delete</string>
+
+    //User Login, Registration and Profile Management
+    <string name="txt_forgot_pw">Forgot Password</string>
+    <string name="txt_email_forgot_pw">Enter your email address</string>
+    <string name="btn_reset_password">Reset Password</string>
+    <string name="txt_login_header">Login</string>
+    <string name="txt_email_phone_login">Email Address/Phone Number</string>
+    <string name="txt_password_login">Password</string>
+    <string name="txt_keep_me_signed_in">Keep me signed in</string>
+    <string name="btn_forgot_pw_login">Forgot Password?</string>
     <string name="btn_login">Login</string>
+    <string name="txt_or_login">or</string>
+    <string name="btn_google_sign_in">Sign in with Google</string>
+    <string name="txt_no_account">Don\'t have an account?</string>
+    <string name="txt_sign_up">Sign Up</string>
+    <string name="btn_cancel_block">Cancel</string>
+    <string name="btn_block">Block</string>
+    <string name="txt_log_out_confirm">Log out of Socially?</string>
+    <string name="btn_log_out_cancel">Cancel</string>
+    <string name="btn_log_out">Log out</string>
+    <string name="btn_view_details_profile">View more details</string>
+    <string name="btn_block_user_profile">Block user</string>
+    <string name="txt_more_details_profile">More Details</string>
+    <string name="txt_education">Education</string>
+    <string name="txt_current_location">Current town/city</string>
+    <string name="txt_home_town">Home town</string>
+    <string name="txt_relationship">Relationship</string>
+    <string name="btn_upload_profile_picture">Upload Profile Picture</string>
+    <string name="btn_upload_cover_photo">Upload Cover Photo</string>
+    <string name="btn_remove_profile_picture">Remove Profile Picture</string>
+    <string name="btn_remove_cover_photo">Remove Cover Photo</string>
+    <string name="btn_add_details">Add</string>
+    <string name="btn_edit_profile">Edit Profile</string>
+    <string name="btn_blocked_users">Blocked Users</string>
+    <string name="btn_logout">Log Out</string>
+    <string name="txt_register">Register</string>
+    <string name="txt_email_reg">Email Address</string>
+    <string name="txt_password_reg">Password</string>
+    <string name="txt_confirm_pw_reg">Confirm Password</string>
+    <string name="btn_register">Register</string>
+    <string name="txt_details">Details</string>
+    <string name="txt_user_name">What\'s your name?</string>
+    <string name="txt_first_name">First Name</string>
+    <string name="txt_last_name">Last Name</string>
+    <string name="txt_dob">What\'s your date of birth</string>
+    <string name="txt_gender">What\'s your gender</string>
+    <string name="txt_female">Female</string>
+    <string name="txt_male">Male</string>
+    <string name="txt_prefer_not_to_say">Prefer not to say</string>
+    <string name="btn_next">Next</string>
+    <string name="txt_users">Users</string>
+    <string name="txt_blocked_users">Blocked Users</string>
+    <string name="btn_unblock">Unblock</string>
+    <string name="txt_socialize_with">Socialize with</string>
+    <string name="btn_register_splash">Register</string>
+    <string name="btn_login_splash">Login</string>
+    <string name="welcome">Welcome to</string>
+    <string name="txt_connect">Connect</string>
+    <string name="txt_with">With</string>
+    <string name="txt_people">People</string>
+    <string name="txt_dot">.</string>
+    <string name="btn_get_started">Get Started</string>
+    <string name="txt_splash_screen_3_heading">Communicate with your loved ones</string>
+
+    //Personal Chat Management
+    <string name="chat_user_status_online">online</string>
+    <string name="chat_user_status_typing">typing...</string>
+    <string name="chat_txt_input">Message</string>
+    <string name="message_status_delivered">Delivered</string>
+    <string name="message_status_seen">Seen</string>
+    <string name="chat_list_header">Chats</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="delete_prompt_txt">Are you sure you want to delete this message?</string>
+    <string name="delete_prompt_no">No</string>
+    <string name="delete_prompt_delete">Delete</string>
+    <string name="deleted_message">This message was deleted</string>
+
+    //Group Chat Management
+    <string name="group_chat_user_status_typing">is typing...</string>
+    <string name="group_info">Group Info</string>
+    <string name="group_chat_leave_prompt">Are you sure you want to leave this group?</string>
+    <string name="group_chat_leave_prompt_no">No</string>
+    <string name="group_chat_leave_prompt_yes">Yes</string>
+    <string name="group_chat_participants">Participants :</string>
+    <string name="group_chat_leave">Leave Group</string>
+    <string name="group_chat_add_new_participants">Add new participants</string>
+    <string name="group_chat_save">Save</string>
+    <string name="group_chat_add_participants_header">Add participants</string>
+    <string name="create_group_header">Create Group</string>
+    <string name="create_group_participant_label">participants</string>
+    <string name="create_group_save">Save</string>
+
 </resources>
