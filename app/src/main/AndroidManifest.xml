@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.socially">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,20 +13,57 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Socially">
+
         <activity
             android:name=".activities.ChatActivity"
             android:theme="@style/Theme.Socially.NoActionBar"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Socially.NoActionBar">
+            android:name=".OtherUserProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UsersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".GetStartedActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar" />
+        <activity
+            android:name=".SlashScreenThreeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar" />
+        <activity
+            android:name=".SlashScreenTwoActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar" />
+        <activity
+            android:name=".SlashScreenOneActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
