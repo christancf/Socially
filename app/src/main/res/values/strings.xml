@@ -89,6 +89,7 @@
     <string name="txt_users">Users</string>
     <string name="txt_blocked_users">Blocked Users</string>
     <string name="btn_unblock">Unblock</string>
+    <string name="txt_socialize_with">Socialize with</string>
     <string name="txt_socialize">Socialize</string>
     <string name="btn_register_splash">Register</string>
     <string name="btn_login_splash">Login</string>
