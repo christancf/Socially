@@ -9,6 +9,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/status_orange</item>
         <!-- Customize your theme here. -->
+        <item name="actionOverflowButtonStyle">@style/IconOverflow</item>
     </style>
     <!--    Theme Without ActionBar-->
     <style name="Theme.Socially.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -20,5 +21,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/status_orange</item>
         <!-- Customize your theme here. -->
+    </style>
+    <!-- Action Bar icon overflow color setup -->
+    <style name="IconOverflow" parent="Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:tint">@android:color/black</item>
     </style>
 </resources>
