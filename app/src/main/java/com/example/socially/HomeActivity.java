@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,19 +30,10 @@ public class HomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Posts");
-
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
-//        ColorDrawable colorDrawable
-//                = new ColorDrawable(Color.parseColor("#FFFFFF"));
-
-        // Set BackgroundDrawable
-//        actionBar.setBackgroundDrawable(colorDrawable);
-//        actionBar.
-
+        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Posts</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         HomeIV = findViewById(R.id.home);
         UsersIV = findViewById(R.id.users);
