@@ -283,4 +283,22 @@ public class ChatActivity extends AppCompatActivity {
         checkOnlineStatus("online");
         super.onResume();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // get timestamp
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        //set offline with last seen in time stamp
+        checkOnlineStatus(timestamp);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // get timestamp
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        //set offline with last seen in time stamp
+        checkOnlineStatus(timestamp);
+    }
 }
