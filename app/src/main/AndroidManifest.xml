@@ -15,9 +15,19 @@
         android:theme="@style/Theme.Socially">
 
         <activity
-            android:name=".activities.ChatActivity"
-            android:theme="@style/Theme.Socially.NoActionBar"
+            android:name=".EditPostActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activities.ChatActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".CreatePostActivity"
+            android:exported="false" />
+
         <activity
             android:name=".OtherUserProfileActivity"
             android:exported="false"
@@ -37,6 +47,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -50,12 +50,15 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
         });
         UsersIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+
         AddPostIV.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), CreatePostActivity.class));
         });
+
         ChatIV.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ChatActivity.class));
+            //startActivity(new Intent(this, ChatActivity.class));
         });
         ProfileIV.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
