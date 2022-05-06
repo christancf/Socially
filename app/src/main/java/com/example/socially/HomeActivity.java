@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -29,19 +31,10 @@ public class HomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Posts");
-
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
-//        ColorDrawable colorDrawable
-//                = new ColorDrawable(Color.parseColor("#FFFFFF"));
-
-        // Set BackgroundDrawable
-//        actionBar.setBackgroundDrawable(colorDrawable);
-//        actionBar.
-
+        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Posts</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         HomeIV = findViewById(R.id.home);
         UsersIV = findViewById(R.id.users);
@@ -49,17 +42,23 @@ public class HomeActivity extends AppCompatActivity {
         ChatIV = findViewById(R.id.chat);
         ProfileIV = findViewById(R.id.profile);
 
+//        Drawable res = getResources().getDrawable(R.drawable.self_cover);
+//        ProfileIV.setImageDrawable(res);
+
         //create an intent, start activity and work on your function
         HomeIV.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
         });
         UsersIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+
         AddPostIV.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), CreatePostActivity.class));
         });
+
         ChatIV.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ChatActivity.class));
+            //startActivity(new Intent(this, ChatActivity.class));
         });
         ProfileIV.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));

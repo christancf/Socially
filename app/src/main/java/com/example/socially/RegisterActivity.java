@@ -6,7 +6,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,13 +46,16 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //set action bar
+        //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Create Account");
-
-        //Back button
+        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Create Account</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        //Setting up a back arrow
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_baseline_arrow_back_24);
+        upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+        actionBar.setHomeAsUpIndicator(upArrow);
 
         emailET = findViewById(R.id.emailET);
         passwordET = findViewById(R.id.passwordET);
@@ -105,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
                         hashMap.put("relationshipStatus", "");
                         hashMap.put("profileImage", "");
                         hashMap.put("coverImage", "");
+                        hashMap.put("status", "true");
 
                         //firebase database instance
                         FirebaseDatabase db = FirebaseDatabase.getInstance(firebaseURL);

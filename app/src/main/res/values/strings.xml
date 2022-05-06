@@ -131,4 +131,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="tv_user_name">User Name</string>
+    <string name="tv_post_content_edit">Post Content</string>
+
 </resources>

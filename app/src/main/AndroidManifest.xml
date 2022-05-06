@@ -13,20 +13,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Socially">
+
+        <activity
+            android:name=".EditPostActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activities.ChatActivity"
             android:exported="false"
             android:theme="@style/Theme.Socially.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".CreatePostActivity"
+            android:exported="false" />
+
         <activity
             android:name=".OtherUserProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar"/>
         <activity
             android:name=".UsersActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar" />
         <activity
             android:name=".RegisterDetailsActivity"
             android:exported="false" />
