@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -14,10 +15,15 @@ import android.graphics.fonts.Font;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,9 +38,8 @@ import java.util.Map;
 public class ProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "ProfileActivity";
-    ImageView profileImageIV;
-    TextView emailTV;
-    ActionBar actionBar;
+    ImageView profileImageIV, moreOptionsIV, coverImageIV, backArrowIV;
+    TextView profileIdTV;
 
     //User Name
     String userName;
@@ -46,21 +51,18 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
-        //Setting up a transparent actionbar
-        actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        //Setting up a back arrow
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
-        final Drawable upArrow;
-        upArrow = getResources().getDrawable(R.drawable.ic_baseline_arrow_back_24);
-        upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
-        actionBar.setHomeAsUpIndicator(upArrow);
-
         //Creating firebase instance
         mAuth = FirebaseAuth.getInstance();
 
+        profileImageIV = findViewById(R.id.profileImageIV);
+        moreOptionsIV = findViewById(R.id.moreOptionsIV);
+        coverImageIV = findViewById(R.id.coverImageIV);
+        profileIdTV = findViewById(R.id.profileIdTV);
+        backArrowIV = findViewById(R.id.backArrow);
+
+        //OnClick
+        moreOptionsIV.setOnClickListener(view -> showMoreOptions());
+        backArrowIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
     }
 
     private void checkUserStatus(){
@@ -79,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     System.out.println(UserData.get("firstName"));
                     userName = (String) UserData.get("firstName")+ " " +UserData.get("lastName");
-                    actionBar.setTitle(Html.fromHtml("<font color='#000000'>"+userName+"</font>"));
+                    profileIdTV.setText(userName);
                 }
             });
         }else{
@@ -94,21 +96,25 @@ public class ProfileActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_profile, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+    //show dialog
+    private void showMoreOptions() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.bottom_sheet_layout);
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
+        LinearLayout editProfile = dialog.findViewById(R.id.editProfileLL);
+        LinearLayout blockedUsers = dialog.findViewById(R.id.blockedUsersLL);
+        LinearLayout logOut = dialog.findViewById(R.id.logOutLL);
 
-        switch (id){
-            case R.id.logoutOption: mAuth.signOut();
-        }
-        checkUserStatus();
-        return super.onOptionsItemSelected(item);
+        editProfile.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Edit Profile", Toast.LENGTH_SHORT).show());
+        blockedUsers.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Blocked Users", Toast.LENGTH_SHORT).show());
+        logOut.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Log Out", Toast.LENGTH_SHORT).show());
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.bottomDialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
     @Override
