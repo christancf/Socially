@@ -2,10 +2,13 @@ package com.example.socially;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.socially.activities.ChatActivity;
 
 public class OtherUserProfileActivity extends AppCompatActivity {
 
@@ -23,9 +26,14 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         UID = getIntent().getStringExtra("UID");
         output.setText(UID);
 
+
         chatIcon.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Chat Icon", Toast.LENGTH_SHORT).show();
             //Chat Function
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtra("hisUid", UID);
+            this.startActivity(intent);
+
         });
     }
 }

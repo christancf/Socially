@@ -108,9 +108,9 @@
     <string name="message_status_delivered">Delivered</string>
     <string name="message_status_seen">Seen</string>
     <string name="chat_list_header">Chats</string>
-    <string name="type_a_message">Type a message</string>
     <string name="delete_prompt_txt">Are you sure you want to delete this message?</string>
     <string name="delete_prompt_no">No</string>
+    <string name="default_username">Her Name</string>
     <string name="delete_prompt_delete">Delete</string>
     <string name="deleted_message">This message was deleted</string>
 
@@ -128,6 +128,8 @@
     <string name="create_group_header">Create Group</string>
     <string name="create_group_participant_label">participants</string>
     <string name="create_group_save">Save</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="tv_user_name">User Name</string>
     <string name="tv_post_content_edit">Post Content</string>
