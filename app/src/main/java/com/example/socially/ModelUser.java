@@ -1,12 +1,12 @@
 package com.example.socially;
 
 public class ModelUser {
-    String uid, coverImage, currentCity, dateOfBirth, email, firstName, gender, homeTown, lastName, profileImage, relationshipStatus;
+    String uid, coverImage, currentCity, dateOfBirth, email, firstName, gender, homeTown, lastName, profileImage, relationshipStatus, onlineStatus, typingTo;
 
     public ModelUser() {
     }
 
-    public ModelUser(String uid, String coverImage, String currentCity, String dateOfBirth, String email, String firstName, String gender, String homeTown, String lastName, String profileImage, String relationshipStatus) {
+    public ModelUser(String uid, String coverImage, String currentCity, String dateOfBirth, String email, String firstName, String gender, String homeTown, String lastName, String profileImage, String relationshipStatus, String onlineStatus, String typingTo) {
         this.uid = uid;
         this.coverImage = coverImage;
         this.currentCity = currentCity;
@@ -18,6 +18,8 @@ public class ModelUser {
         this.lastName = lastName;
         this.profileImage = profileImage;
         this.relationshipStatus = relationshipStatus;
+        this.onlineStatus = onlineStatus;
+        this.typingTo = typingTo;
     }
 
     public String getUid() {
@@ -106,5 +108,21 @@ public class ModelUser {
 
     public void setRelationshipStatus(String relationshipStatus) {
         this.relationshipStatus = relationshipStatus;
+    }
+
+    public String getOnlineStatus() {
+        return onlineStatus;
+    }
+
+    public void setOnlineStatus(String onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
+
+    public String getTypingTo() {
+        return typingTo;
+    }
+
+    public void setTypingTo(String typingTo) {
+        this.typingTo = typingTo;
     }
 }
