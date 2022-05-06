@@ -129,4 +129,7 @@
     <string name="create_group_participant_label">participants</string>
     <string name="create_group_save">Save</string>
 
+    <string name="tv_user_name">User Name</string>
+    <string name="tv_post_content_edit">Post Content</string>
+
 </resources>

@@ -1,20 +1,15 @@
 package com.example.socially;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.socially.activities.ChatActivity;
+//import com.example.socially.activities.ChatActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -54,12 +49,15 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
         });
         UsersIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+
         AddPostIV.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), CreatePostActivity.class));
         });
+
         ChatIV.setOnClickListener(view -> {
             Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(this, ChatActivity.class));
+            //startActivity(new Intent(this, ChatActivity.class));
         });
         ProfileIV.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
