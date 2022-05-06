@@ -5,7 +5,9 @@ plugins {
 
 android {
     compileSdk 32
-
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
         applicationId "com.example.socially"
         minSdk 21
