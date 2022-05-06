@@ -114,6 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                         hashMap.put("profileImage", "");
                         hashMap.put("coverImage", "");
                         hashMap.put("onlineStatus", "online");
+                        hashMap.put("typingTo", "noOne");
 
                         //firebase database instance
                         FirebaseDatabase db = FirebaseDatabase.getInstance(firebaseURL);

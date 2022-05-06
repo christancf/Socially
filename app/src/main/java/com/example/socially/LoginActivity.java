@@ -91,6 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                         DatabaseReference ref = db.getReference("Users");
                         //insert data
                         ref.child(user.getUid()).child("onlineStatus").setValue("online");
+                        ref.child(user.getUid()).child("typingTo").setValue("noOne");
+
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         finish();
