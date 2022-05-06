@@ -31,13 +31,15 @@
 
         <activity
             android:name=".OtherUserProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar"/>
         <activity
             android:name=".UsersActivity"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Socially.NoActionBar" />
         <activity
             android:name=".RegisterDetailsActivity"
             android:exported="false" />

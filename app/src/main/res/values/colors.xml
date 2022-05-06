@@ -7,4 +7,5 @@
     <color name="add_button">#FFCF73</color>
     <color name="chat_msg">#CBB4A3</color>
     <color name="chat_msg_other">#E5E5E5</color>
+    <color name="background_clr">#808080</color>
 </resources>
