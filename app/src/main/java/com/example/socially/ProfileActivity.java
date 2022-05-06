@@ -5,7 +5,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -16,8 +18,10 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
@@ -40,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String TAG = "ProfileActivity";
     ImageView profileImageIV, moreOptionsIV, coverImageIV, backArrowIV;
     TextView profileIdTV;
-
     //User Name
     String userName;
 
@@ -54,15 +57,18 @@ public class ProfileActivity extends AppCompatActivity {
         //Creating firebase instance
         mAuth = FirebaseAuth.getInstance();
 
+        //initializing variables;
         profileImageIV = findViewById(R.id.profileImageIV);
         moreOptionsIV = findViewById(R.id.moreOptionsIV);
         coverImageIV = findViewById(R.id.coverImageIV);
         profileIdTV = findViewById(R.id.profileIdTV);
         backArrowIV = findViewById(R.id.backArrow);
 
+
         //OnClick
         moreOptionsIV.setOnClickListener(view -> showMoreOptions());
         backArrowIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
+
     }
 
     private void checkUserStatus(){
@@ -108,7 +114,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         editProfile.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Edit Profile", Toast.LENGTH_SHORT).show());
         blockedUsers.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Blocked Users", Toast.LENGTH_SHORT).show());
-        logOut.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Log Out", Toast.LENGTH_SHORT).show());
+        logOut.setOnClickListener(view -> {
+            logOutOption();
+            dialog.cancel();
+        });
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -116,6 +125,49 @@ public class ProfileActivity extends AppCompatActivity {
         dialog.getWindow().getAttributes().windowAnimations = R.style.bottomDialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
+
+
+    private void logOutOption(){
+        final Dialog logOutDialog = new Dialog(this);
+        logOutDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        logOutDialog.setContentView(R.layout.alert_dialog_layout);
+
+        TextView cancelTV = logOutDialog.findViewById(R.id.cancelTV);
+        TextView logOutTV = logOutDialog.findViewById(R.id.logOutTV);
+
+        cancelTV.setOnClickListener(view -> logOutDialog.cancel());
+        logOutTV.setOnClickListener(view -> {
+            mAuth.signOut();
+            checkUserStatus();
+        });
+
+        logOutDialog.show();
+        logOutDialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        logOutDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        logOutDialog.getWindow().getAttributes().windowAnimations = R.style.alertDialogAnimation;
+        logOutDialog.getWindow().setGravity(Gravity.CENTER);
+        //dialog.setCancelable(false);
+
+
+    }
+
+//    private void logOutOption(){
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.alertDialogAnimation);
+//        View view = LayoutInflater.from(this).inflate(
+//                R.layout.alert_dialog_layout, findViewById(R.id.alert_dialog)
+//        );
+//        builder.setMessage("Log out of Socially?")
+//                .setCancelable(false)
+//                .setPositiveButton("Log out", (dialogInterface, i) -> {
+//                    mAuth.signOut();
+//                    checkUserStatus();
+//                })
+//                .setNegativeButton("Cancel", ((dialogInterface, i) -> dialogInterface.cancel()));
+//
+//        builder.setView(view);
+//        AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {

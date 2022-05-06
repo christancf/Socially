@@ -20,11 +20,18 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/status_orange</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowAnimationStyle">@style/alertDialogAnimation</item>
     </style>
 
     <!-- Bottom slide in Dialog box animation -->
     <style name="bottomDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
+    </style>
+
+    <!--  Alert Dialog animation  -->
+    <style name="alertDialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 </resources>
