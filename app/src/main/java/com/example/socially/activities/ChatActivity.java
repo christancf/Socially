@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -34,8 +35,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -113,6 +116,18 @@ public class ChatActivity extends AppCompatActivity {
                     //String name = "" + ds.child("name").getValue();
                     //String image = "" + ds.child("image").getValue();
 
+                    //get value of online status
+                    String onlineStatus = modelUser.getOnlineStatus();
+                    if (onlineStatus.equals("online")) {
+                        userStatusTv.setText(onlineStatus);
+                    } else {
+                        //convert timestamp to proper time date
+                        //convert time stamp to dd/mm/yyyy hh:mm am/pm
+                        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+                        cal.setTimeInMillis(Long.parseLong(onlineStatus));
+                        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
+                        userStatusTv.setText("Lase seen at: " + dateTime);
+                    }
                     //set data
                     nameTv.setText(name);
                     try {
@@ -236,15 +251,36 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    private void checkOnlineStatus(String status) {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance(firebaseURL).getReference("Users").child(myUID);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("onlineStatus", status);
+        //update value of onlineStatus of current user
+        dbRef.updateChildren(hashMap);
+    }
+
     @Override
     protected void onStart() {
         checkUserStatus();
+        //set online
+        checkOnlineStatus("online");
         super.onStart();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        // get timestamp
+        String timestamp = String.valueOf(System.currentTimeMillis());
+        //set offline with last seen in time stamp
+        checkOnlineStatus(timestamp);
         userRefForSeen.removeEventListener(seenListener);
+    }
+
+    @Override
+    protected void onResume() {
+        //set online
+        checkOnlineStatus("online");
+        super.onResume();
     }
 }
