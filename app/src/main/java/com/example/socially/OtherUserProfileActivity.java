@@ -28,7 +28,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
 
 
         chatIcon.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Chat Icon", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Opening Chat...", Toast.LENGTH_SHORT).show();
             //Chat Function
             Intent intent = new Intent(this, ChatActivity.class);
             intent.putExtra("hisUid", UID);
