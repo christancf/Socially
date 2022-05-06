@@ -1,15 +1,22 @@
 package com.example.socially;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-//import com.example.socially.activities.ChatActivity;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import com.example.socially.activities.ChatActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -24,25 +31,19 @@ public class HomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
-        actionBar.setTitle("Posts");
-
-        // Define ColorDrawable object and parse color
-        // using parseColor method
-        // with color hash code as its parameter
-//        ColorDrawable colorDrawable
-//                = new ColorDrawable(Color.parseColor("#FFFFFF"));
-
-        // Set BackgroundDrawable
-//        actionBar.setBackgroundDrawable(colorDrawable);
-//        actionBar.
-
+        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Posts</font>"));
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         HomeIV = findViewById(R.id.home);
         UsersIV = findViewById(R.id.users);
         AddPostIV = findViewById(R.id.addPost);
         ChatIV = findViewById(R.id.chat);
         ProfileIV = findViewById(R.id.profile);
+
+//        Drawable res = getResources().getDrawable(R.drawable.self_cover);
+//        ProfileIV.setImageDrawable(res);
 
         //create an intent, start activity and work on your function
         HomeIV.setOnClickListener(view -> {
