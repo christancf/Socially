@@ -1,106 +1,120 @@
 package com.example.socially.adapters;
 
-import android.graphics.Bitmap;
+import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.socially.databinding.ItemContainerReceivedMessageBinding;
-import com.example.socially.databinding.ItemContainerSentMessageBinding;
-import com.example.socially.models.ChatMessage;
+import com.example.socially.R;
+import com.example.socially.models.ModelChat;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
-public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHolder>{
 
-    private final List<ChatMessage> chatMessages;
-    private final Bitmap receiverProfileImage;
-    private final String senderId;
+    private static final int MSG_TYPE_LEFT = 0;
+    private static final int MSG_TYPE_RIGHT = 1;
+    Context context;
+    List<ModelChat> chatList;
+    String imageUrl;
 
-    public static final int VIEW_TYPE_SENT = 1;
-    public static final int VIEW_TYPE_RECEIVED = 2;
+    FirebaseUser fUser;
 
-    public ChatAdapter(List<ChatMessage> chatMessages, Bitmap receiverProfileImage, String senderId) {
-        this.chatMessages = chatMessages;
-        this.receiverProfileImage = receiverProfileImage;
-        this.senderId = senderId;
+    public ChatAdapter(Context context, List<ModelChat> chatList, String imageUrl) {
+        this.context = context;
+        this.chatList = chatList;
+        this.imageUrl = imageUrl;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == VIEW_TYPE_SENT) {
-            return new SentMessageViewHolder(
-                    ItemContainerSentMessageBinding.inflate(
-                            LayoutInflater.from(parent.getContext()),
-                            parent,
-                            false
-                    )
-            );
+    public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        //inflate layouts: row_chat_left.xml for receiver, row_chat_right.xml for sender
+        if (viewType == MSG_TYPE_RIGHT) {
+            View view = LayoutInflater.from(context).inflate(R.layout.row_chat_right, parent, false);
+            return new MyHolder(view);
         } else {
-            return new ReceivedMessageViewHolder(
-                    ItemContainerReceivedMessageBinding.inflate(
-                            LayoutInflater.from(parent.getContext()),
-                            parent,
-                            false
-                    )
-            );
+            View view = LayoutInflater.from(context).inflate(R.layout.row_chat_left, parent, false);
+            return new MyHolder(view);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(getItemViewType(position) == VIEW_TYPE_SENT) {
-            ((SentMessageViewHolder) holder).setData(chatMessages.get(position));
+    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+        //get data
+        String message = chatList.get(position).getMessage();
+        String timeStamp = chatList.get(position).getTimestamp();
+
+        //convert time stamp to dd/mm/yyyy hh:mm am/pm
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(Long.parseLong(timeStamp));
+        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
+
+        //set data
+        holder.messageTv.setText(message);
+        holder.timeTv.setText(dateTime);
+        try {
+            Picasso.get().load(imageUrl).into(holder.profileIv);
+        } catch (Exception e) {
+
+        }
+
+        //set seen/delivered status of message
+        if (position == chatList.size() - 1) {
+            if (chatList.get(position).getIsSeen()) {
+                holder.isSeenTv.setText(R.string.message_status_seen);
+            } else {
+                holder.isSeenTv.setText(R.string.message_status_delivered);
+            }
         } else {
-            ((ReceivedMessageViewHolder) holder).setData(chatMessages.get(position), receiverProfileImage);
+            holder.isSeenTv.setVisibility(View.GONE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return chatMessages.size();
+        return chatList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(chatMessages.get(position).senderId.equals(senderId)) {
-            return VIEW_TYPE_SENT;
+        //get currently signed in user
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (chatList.get(position).getSender().equals((fUser.getUid()))) {
+            return MSG_TYPE_RIGHT;
         } else {
-            return VIEW_TYPE_RECEIVED;
+            return MSG_TYPE_LEFT;
         }
     }
 
-    static class SentMessageViewHolder extends RecyclerView.ViewHolder {
+    //view holder class
+    class MyHolder extends RecyclerView.ViewHolder {
 
-        private final ItemContainerSentMessageBinding binding;
+        //views
+        ImageView profileIv;
+        TextView messageTv, timeTv, isSeenTv;
 
-        SentMessageViewHolder(ItemContainerSentMessageBinding itemContainerSentMessageBinding) {
-            super(itemContainerSentMessageBinding.getRoot());
-            binding = itemContainerSentMessageBinding;
-        }
+        public MyHolder(@NonNull View itemView) {
+            super(itemView);
 
-        void setData(ChatMessage chatMessage) {
-            binding.textMessage.setText((chatMessage.message));
-            binding.textDateTime.setText((chatMessage.dateTime));
-        }
-    }
+            //init views
+            profileIv = itemView.findViewById(R.id.profileIv);
+            messageTv = itemView.findViewById(R.id.messageTv);
+            timeTv = itemView.findViewById(R.id.timeTv);
+            isSeenTv = itemView.findViewById(R.id.isSeenTv);
 
-    static class ReceivedMessageViewHolder extends RecyclerView.ViewHolder {
-
-        private final ItemContainerReceivedMessageBinding binding;
-
-        ReceivedMessageViewHolder(ItemContainerReceivedMessageBinding itemContainerReceivedMessageBinding) {
-            super(itemContainerReceivedMessageBinding.getRoot());
-            binding = itemContainerReceivedMessageBinding;
-        }
-
-        void setData(ChatMessage chatMessage, Bitmap receiverProfileImage) {
-            binding.textMessage.setText(chatMessage.message);
-            binding.textDateTime.setText(chatMessage.dateTime);
-            binding.imageProfile.setImageBitmap(receiverProfileImage);
         }
     }
 }
