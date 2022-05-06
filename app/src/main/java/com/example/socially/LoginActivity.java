@@ -23,9 +23,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+
+    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
 
     TextInputLayout loginEmailTIL;
     EditText loginEmailET, loginPasswordET;
@@ -81,6 +85,13 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
+                        //firebase database instance
+                        FirebaseDatabase db = FirebaseDatabase.getInstance(firebaseURL);
+                        //referencing "Users"
+                        DatabaseReference ref = db.getReference("Users");
+                        //insert data
+                        ref.child(user.getUid()).child("onlineStatus").setValue("online");
+                        ref.child(user.getUid()).child("typingTo").setValue("noOne");
 
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
