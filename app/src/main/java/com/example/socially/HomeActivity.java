@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -40,6 +41,9 @@ public class HomeActivity extends AppCompatActivity {
         AddPostIV = findViewById(R.id.addPost);
         ChatIV = findViewById(R.id.chat);
         ProfileIV = findViewById(R.id.profile);
+
+//        Drawable res = getResources().getDrawable(R.drawable.self_cover);
+//        ProfileIV.setImageDrawable(res);
 
         //create an intent, start activity and work on your function
         HomeIV.setOnClickListener(view -> {
