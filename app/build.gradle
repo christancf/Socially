@@ -5,7 +5,9 @@ plugins {
 
 android {
     compileSdk 32
-
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
         applicationId "com.example.socially"
         minSdk 21
@@ -48,6 +50,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'androidx.appcompat:appcompat:1.0.0'
+    //image downloading and caching library
+    implementation 'com.squareup.picasso:picasso:2.71828'
     //Scalable Size Unit (support for different screen sizes)
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
