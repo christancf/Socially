@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.socially.R;
 import com.example.socially.models.ModelPost;
 import com.squareup.picasso.Picasso;
@@ -67,7 +68,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
         //set user profile image
         try {
-            Picasso.get().load(profileImage).placeholder(R.drawable.ic_default_image).into(holder.postProfilePictureCIV);
+            //Picasso.get().load(profileImage).into(holder.postProfilePictureCIV);
+            Glide.with(context).asBitmap().load(profileImage).into(holder.postProfilePictureCIV);
         }
         catch (Exception e) {
 
@@ -135,7 +137,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             super(itemView);
 
             //init views
-            postProfilePictureCIV = itemView.findViewById(R.id.civ_profile_picture);
+            postProfilePictureCIV = itemView.findViewById(R.id.civ_post_profile_pic);
             userNameTV = itemView.findViewById(R.id.tv_user_name);
             timeTV = itemView.findViewById(R.id.tv_time);
             showPostContentTV = itemView.findViewById(R.id.tv_show_post_content);
