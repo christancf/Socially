@@ -134,44 +134,44 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/post_footer_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/post_footer_layout"
             android:layout_below="@+id/postContentLayout"
             android:layout_alignParentBottom="true"
             android:padding="5dp">
 
             <ImageView
+                android:id="@+id/iv_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/iv_camera"
                 android:layout_marginStart="5dp"
-                app:srcCompat="@drawable/ic_baseline_photo_camera_24"/>
+                app:srcCompat="@drawable/ic_baseline_photo_camera_24" />
 
             <ImageView
+                android:id="@+id/iv_gallery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/iv_gallery"
                 android:layout_marginStart="40dp"
-                app:srcCompat="@drawable/ic_baseline_insert_photo_24"/>
+                app:srcCompat="@drawable/ic_baseline_insert_photo_24" />
 
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/camera"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:src="@drawable/ic_baseline_photo_camera_24"-->
-<!--                android:contentDescription="camera"-->
-<!--                android:layout_margin="5dp" />-->
+            <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--                android:id="@+id/camera"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:src="@drawable/ic_baseline_photo_camera_24"-->
+            <!--                android:contentDescription="camera"-->
+            <!--                android:layout_margin="5dp" />-->
 
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/gallery"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_toEndOf="@+id/camera"-->
-<!--                android:src="@drawable/ic_baseline_insert_photo_24"-->
-<!--                android:contentDescription="gallery"-->
-<!--                android:layout_margin="5dp"-->
-<!--                android:backgroundTint="@color/white"/>-->
+            <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--                android:id="@+id/gallery"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_toEndOf="@+id/camera"-->
+            <!--                android:src="@drawable/ic_baseline_insert_photo_24"-->
+            <!--                android:contentDescription="gallery"-->
+            <!--                android:layout_margin="5dp"-->
+            <!--                android:backgroundTint="@color/white"/>-->
 
 
         </RelativeLayout>
