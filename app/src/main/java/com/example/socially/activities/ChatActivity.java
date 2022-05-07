@@ -267,6 +267,36 @@ public class ChatActivity extends AppCompatActivity {
 
         //reset edittext after sending message
         messageEt.setText("");
+
+        //create chatlist node/child in firebase database
+        final DatabaseReference chatRef1 = FirebaseDatabase.getInstance(firebaseURL).getReference("Chatlist").child(myUID).child(hisUID);
+        chatRef1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                   chatRef1.child("id").setValue(hisUID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        final DatabaseReference chatRef2 = FirebaseDatabase.getInstance(firebaseURL).getReference("Chatlist").child(hisUID).child(myUID);
+        chatRef2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.exists()) {
+                    chatRef2.child("id").setValue(myUID);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void checkUserStatus() {

@@ -26,6 +26,10 @@
             android:windowSoftInputMode="adjustResize" />
 
         <activity
+            android:name=".activities.ChatlistActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".CreatePostActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
