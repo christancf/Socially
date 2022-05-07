@@ -65,7 +65,7 @@ public class CreatePostActivity extends AppCompatActivity {
     CircleImageView profilePictureCIV;
     TextView userNameTV;
     EditText postContentET;
-    ImageView postContentImageIV, cameraIV, galleryIV;
+    ImageView postContentImageIV, cameraIV, galleryIV, closeIV;
     Button publishPostBtn;
 
     //user info
@@ -108,6 +108,8 @@ public class CreatePostActivity extends AppCompatActivity {
                     userName = "" + ds.child("firstName").getValue();
                     userEmail = "" + ds.child("email").getValue();
                     userProfilePicture = "" + ds.child("profileImage").getValue();
+                    userNameTV.setText("" + ds.child("firstName").getValue() + " " + ds.child("lastName").getValue());
+                    profilePictureCIV.setImageURI(Uri.parse("" + ds.child("profileImage").getValue()));
                 }
             }
 
@@ -115,9 +117,11 @@ public class CreatePostActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
 
         //init views
+        closeIV = findViewById(R.id.btn_close);
         profilePictureCIV = findViewById(R.id.civ_profile_picture);
         userNameTV = findViewById(R.id.tv_user_name);
         postContentET = findViewById(R.id.et_post_content);
@@ -125,6 +129,9 @@ public class CreatePostActivity extends AppCompatActivity {
         cameraIV = findViewById(R.id.iv_camera);
         galleryIV = findViewById(R.id.iv_gallery);
         publishPostBtn = findViewById(R.id.btn_publish_post);
+
+        closeIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
+
 
         //upload button click listener
         publishPostBtn.setOnClickListener(new View.OnClickListener() {
