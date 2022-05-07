@@ -1,103 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeActivity">
+    tools:context=".HomeActivity"
+    android:fillViewport="true">
 
-    <!-- Code above this -->
-    <!-- Bottom Navbar -->
-    <View
-        android:id="@+id/divider"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginBottom="68dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view_layout">
 
-    <ImageView
-        android:id="@+id/addPost"
-        android:layout_width="63.54dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="210dp"
-        android:layout_marginBottom="32dp"
-        android:src="@drawable/ic_plus_button"
-        android:contentDescription="@string/add_post_cd"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline4"
-        app:layout_constraintVertical_bias="0.875" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/post_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <ImageView
-        android:id="@+id/home"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginBottom="26dp"
-        android:src="@drawable/ic_home"
-        android:contentDescription="@string/home_cd"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/users"
-        android:layout_width="22dp"
-        android:layout_height="19.36dp"
-        android:layout_marginStart="51dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="26dp"
-        android:src="@drawable/ic_users"
-        android:contentDescription="@string/users_cd"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/addPost"
-        app:layout_constraintStart_toEndOf="@+id/home" />
-
-    <ImageView
-        android:id="@+id/chat"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="26dp"
-        android:src="@drawable/ic_chat"
-        android:contentDescription="@string/chat_cd"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/profile"
-        app:layout_constraintStart_toEndOf="@+id/addPost" />
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/plus_ultra"
-        android:contentDescription="@string/profile_cd"
-        app:civ_border_color="@color/btn_orange"
-        app:civ_border_width="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_navbar_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="659dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_begin="204dp" />
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintGuide_end="330dp"
-        app:layout_constraintTop_toTopOf="parent" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="68dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/addPost"
+            android:layout_width="63.54dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="210dp"
+            android:layout_marginBottom="32dp"
+            android:contentDescription="@string/add_post_cd"
+            android:src="@drawable/ic_plus_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="0.875" />
+
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="26dp"
+            android:contentDescription="@string/home_cd"
+            android:src="@drawable/ic_home"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/users"
+            android:layout_width="22dp"
+            android:layout_height="19.36dp"
+            android:layout_marginStart="51dp"
+            android:layout_marginEnd="55dp"
+            android:layout_marginBottom="26dp"
+            android:contentDescription="@string/users_cd"
+            android:src="@drawable/ic_users"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/addPost"
+            app:layout_constraintStart_toEndOf="@+id/home" />
+
+        <ImageView
+            android:id="@+id/chat"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="49dp"
+            android:layout_marginEnd="45dp"
+            android:layout_marginBottom="26dp"
+            android:contentDescription="@string/chat_cd"
+            android:src="@drawable/ic_chat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/profile"
+            app:layout_constraintStart_toEndOf="@+id/addPost" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:contentDescription="@string/profile_cd"
+            android:src="@drawable/plus_ultra"
+            app:civ_border_color="@color/btn_orange"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>
