@@ -68,9 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(email, pass);
             }
         });
-        loginEmailET.setOnClickListener(view -> {
-            loginEmailTIL.setError("");
-        });
+
 
         signUpRedirectTV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), RegisterDetailsActivity.class)));
 
@@ -121,6 +119,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         checkUserStatus();
         super.onStart();
+    }
+
+    @Override
+    public void onBackPressed() {
+        onDestroy();
+        super.onBackPressed();
     }
 
     @Override

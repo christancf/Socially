@@ -10,8 +10,10 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,11 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.HashMap;
 
@@ -33,18 +38,25 @@ public class RegisterActivity extends AppCompatActivity {
     EditText emailET, passwordET, confirmPasswordET;
     ActionBar actionBar;
     Button registerBtn;
-    String email, password;
+    String email, password, profileImg;
     ProgressDialog progressDialog;
     TextInputLayout emailTIL, passwordTIL, confirmPasswordTIL;
 
+
+    String default_img = "https://firebasestorage.googleapis.com/v0/b/socially-14fd2.appspot.com/o/Users_Profile_Cover_Images%2FprofileImage?alt=media&token=a71e66e7-e9d1-4b16-82b4-f09911831f9c";
     //Firebase
     private FirebaseAuth mAuth;
     private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        firebaseDatabase = FirebaseDatabase.getInstance(firebaseURL);
+        db = firebaseDatabase.getReference("Users");
 
         //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
@@ -97,7 +109,7 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
 
                         String uid = user.getUid();
 
@@ -111,19 +123,18 @@ public class RegisterActivity extends AppCompatActivity {
                         hashMap.put("currentCity", "");
                         hashMap.put("homeTown", "");
                         hashMap.put("relationshipStatus", "");
-                        hashMap.put("profileImage", "");
+                        hashMap.put("profileImage", default_img);
                         hashMap.put("coverImage", "");
                         hashMap.put("onlineStatus", "online");
                         hashMap.put("typingTo", "noOne");
 
-                        //firebase database instance
-                        FirebaseDatabase db = FirebaseDatabase.getInstance(firebaseURL);
-                        //referencing "Users"
-                        DatabaseReference ref = db.getReference("Users");
+
                         //insert data
-                        ref.child(uid).setValue(hashMap)
+                        db.child(uid).setValue(hashMap)
                                 .addOnCompleteListener(task1 -> {
                                     if(task1.isSuccessful()){
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "Account created successfully!", Toast.LENGTH_SHORT).show();
                                         //signout
                                         mAuth.signOut();
                                         //intent to login activity
@@ -163,3 +174,4 @@ public class RegisterActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 }
+
