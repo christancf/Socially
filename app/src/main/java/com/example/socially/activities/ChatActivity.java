@@ -131,7 +131,7 @@ public class ChatActivity extends AppCompatActivity {
                             Calendar cal = Calendar.getInstance(Locale.ENGLISH);
                             cal.setTimeInMillis(Long.parseLong(onlineStatus));
                             String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa", cal).toString();
-                            userStatusTv.setText("Lase seen at: " + dateTime);
+                            userStatusTv.setText("Last seen at: " + dateTime);
                         }
                     }
                     //String name = "" + ds.child("name").getValue();
