@@ -65,11 +65,11 @@ public class CreatePostActivity extends AppCompatActivity {
     CircleImageView profilePictureCIV;
     TextView userNameTV;
     EditText postContentET;
-    ImageView postContentImageIV, cameraIV, galleryIV;
+    ImageView postContentImageIV, cameraIV, galleryIV, closeIV;
     Button publishPostBtn;
 
     //user info
-    String userName, userEmail, userId, userProfilePicture;
+    String userFirstName, userLastName, userEmail, userId, userProfilePicture;
 
     Uri image_rui = null;
 
@@ -105,9 +105,12 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()) {
-                    userName = "" + ds.child("firstName").getValue();
+                    userFirstName = "" + ds.child("firstName").getValue();
+                    userLastName = "" + ds.child("lastName").getValue();
                     userEmail = "" + ds.child("email").getValue();
                     userProfilePicture = "" + ds.child("profileImage").getValue();
+                    userNameTV.setText("" + ds.child("firstName").getValue() + " " + ds.child("lastName").getValue());
+                    profilePictureCIV.setImageURI(Uri.parse("" + ds.child("profileImage").getValue()));
                 }
             }
 
@@ -115,9 +118,11 @@ public class CreatePostActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
+
         });
 
         //init views
+        closeIV = findViewById(R.id.btn_close);
         profilePictureCIV = findViewById(R.id.civ_profile_picture);
         userNameTV = findViewById(R.id.tv_user_name);
         postContentET = findViewById(R.id.et_post_content);
@@ -125,6 +130,9 @@ public class CreatePostActivity extends AppCompatActivity {
         cameraIV = findViewById(R.id.iv_camera);
         galleryIV = findViewById(R.id.iv_gallery);
         publishPostBtn = findViewById(R.id.btn_publish_post);
+
+        closeIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
+
 
         //upload button click listener
         publishPostBtn.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +212,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
                                 //put post info
                                 hashMap.put("uid", userId);
-                                hashMap.put("firstName", userName);
+                                hashMap.put("firstName", userFirstName);
+                                hashMap.put("lastName", userLastName);
                                 hashMap.put("email", userEmail);
                                 hashMap.put("profileImage", userProfilePicture);
                                 hashMap.put("postID", timeStamp);
@@ -258,7 +267,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
             //put post info
             hashMap.put("uid", userId);
-            hashMap.put("firstName", userName);
+            hashMap.put("firstName", userFirstName);
+            hashMap.put("lastName", userLastName);
             hashMap.put("email", userEmail);
             hashMap.put("profileImage", userProfilePicture);
             hashMap.put("postID", timeStamp);
