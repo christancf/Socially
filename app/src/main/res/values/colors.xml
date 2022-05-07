@@ -8,4 +8,5 @@
     <color name="chat_msg">#CBB4A3</color>
     <color name="chat_msg_other">#E5E5E5</color>
     <color name="background_clr">#808080</color>
+    <color name="online_color">#81CA4B</color>
 </resources>

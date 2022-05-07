@@ -8,6 +8,7 @@ import android.text.Html;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socially.adapters.AdapterPost;
 import com.example.socially.models.ModelPost;
+
+import com.example.socially.activities.ChatlistActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -86,8 +89,8 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         ChatIV.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Chat", Toast.LENGTH_SHORT).show();
-            //startActivity(new Intent(this, ChatActivity.class));
+            Toast.makeText(getApplicationContext(), "Opening Chat List", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(getApplicationContext(), ChatlistActivity.class));
         });
         ProfileIV.setOnClickListener(view -> {
             startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
