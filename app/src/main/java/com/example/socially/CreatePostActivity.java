@@ -69,7 +69,7 @@ public class CreatePostActivity extends AppCompatActivity {
     Button publishPostBtn;
 
     //user info
-    String userName, userEmail, userId, userProfilePicture;
+    String userFirstName, userLastName, userEmail, userId, userProfilePicture;
 
     Uri image_rui = null;
 
@@ -105,7 +105,8 @@ public class CreatePostActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()) {
-                    userName = "" + ds.child("firstName").getValue();
+                    userFirstName = "" + ds.child("firstName").getValue();
+                    userLastName = "" + ds.child("lastName").getValue();
                     userEmail = "" + ds.child("email").getValue();
                     userProfilePicture = "" + ds.child("profileImage").getValue();
                     userNameTV.setText("" + ds.child("firstName").getValue() + " " + ds.child("lastName").getValue());
@@ -211,7 +212,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
                                 //put post info
                                 hashMap.put("uid", userId);
-                                hashMap.put("firstName", userName);
+                                hashMap.put("firstName", userFirstName);
+                                hashMap.put("lastName", userLastName);
                                 hashMap.put("email", userEmail);
                                 hashMap.put("profileImage", userProfilePicture);
                                 hashMap.put("postID", timeStamp);
@@ -265,7 +267,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
             //put post info
             hashMap.put("uid", userId);
-            hashMap.put("firstName", userName);
+            hashMap.put("firstName", userFirstName);
+            hashMap.put("lastName", userLastName);
             hashMap.put("email", userEmail);
             hashMap.put("profileImage", userProfilePicture);
             hashMap.put("postID", timeStamp);
