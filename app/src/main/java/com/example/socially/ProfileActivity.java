@@ -1,12 +1,5 @@
 package com.example.socially;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -14,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -29,8 +21,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.socially.adapters.AdapterPost;
+import com.example.socially.models.ModelPost;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,11 +43,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -55,6 +56,9 @@ public class ProfileActivity extends AppCompatActivity {
     TextView profileIdTV;
     //User Name
     String userName, userEmail, userProfilePicture, userCoverPicture;
+
+    //recycler view
+    RecyclerView userPostRecyclerView;
 
     //permission constants
     private static final int CAMERA_REQUEST_CODE = 100;
@@ -67,6 +71,10 @@ public class ProfileActivity extends AppCompatActivity {
     //permissions array
     String[] cameraPermissions;
     String[] storagePermissions;
+
+    List<ModelPost> postList;
+    AdapterPost adapterPost;
+    String uid;
 
     String storagePath = "Users_Profile_Cover_Images/";
 
@@ -110,19 +118,63 @@ public class ProfileActivity extends AppCompatActivity {
         profileIdTV = findViewById(R.id.profileIdTV);
         backArrowIV = findViewById(R.id.backArrow);
 
+
         //OnClick
         moreOptionsIV.setOnClickListener(view -> showMoreOptions());
         backArrowIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
         profileImageIV.setOnClickListener(view -> showMoreProfileOptions());
 
-        checkUserStatus();
+        userPostRecyclerView = findViewById(R.id.recycler_view_user_post);
+        //linear layout for recycler view
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        //show latest post first
+        layoutManager.setStackFromEnd(true);
+        layoutManager.setReverseLayout(true);
+        //set this layout to recycler view
+        userPostRecyclerView.setLayoutManager(layoutManager);
 
+        postList = new ArrayList<>();
+
+        checkUserStatus();
+        loadMyPosts();
+    }
+
+    private void loadMyPosts() {
+
+        //init post list
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
+        //query to load posts
+        Query query = ref.orderByChild("uid").equalTo(uid);
+        //get all data from this ref
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                postList.clear();
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    ModelPost myPosts = ds.getValue(ModelPost.class);
+
+                    //add to list
+                    postList.add(myPosts);
+
+                    //adapter
+                    adapterPost = new AdapterPost(getApplicationContext(), postList);
+                    //set this adapter to recycler view
+                    userPostRecyclerView.setAdapter(adapterPost);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ProfileActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void checkUserStatus(){
         user = mAuth.getCurrentUser();
         Log.d(TAG, "checkUserStatus: function called. User = " + user);
         if(user != null){
+            uid = user.getUid();
             userEmail = user.getEmail();
             setupUserProfile();
         }else{
@@ -366,10 +418,12 @@ public class ProfileActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return result;
     }
+
     private void requestStoragePermission() {
         //request runtime storage permission
         ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
     }
+
     private boolean checkCameraPermission() {
         //check if camera permission is enabled or not
         boolean cameraResult = ContextCompat.checkSelfPermission(this,
@@ -377,10 +431,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         return cameraResult && checkStoragePermission();
     }
+
     private void requestCameraPermission() {
         //request runtime camera permission
         ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -427,4 +483,41 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-}
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.post_menu, menu);
+//
+//        MenuItem menuItem = menu.findItem(R.id.search);
+//        SearchView searchView = (SearchView) menuItem.getActionView();
+//        searchView.setQueryHint("Search post...");
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                if(!TextUtils.isEmpty(query)) {
+//                    searchMyPosts(query);
+//                } else {
+//                    loadMyPosts();
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if(!TextUtils.isEmpty(newText)) {
+//                    searchMyPosts(newText);
+//                } else {
+//                    loadMyPosts();
+//                }
+//                return false;
+//            }
+//        });
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        return super.onOptionsItemSelected(item);
+//    }
+ }
