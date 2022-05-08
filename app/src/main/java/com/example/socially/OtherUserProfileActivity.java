@@ -101,19 +101,14 @@ public class OtherUserProfileActivity extends AppCompatActivity {
     }
 
     private void loadHisPosts() {
-        //linear layout for recycler view
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //show latest post first
         layoutManager.setStackFromEnd(true);
         layoutManager.setReverseLayout(true);
-        //set this layout to recycler view
         userPostRecyclerView.setLayoutManager(layoutManager);
 
-        //init post list
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
-        //get all data from this ref
+        Query query = ref.orderByChild("uid").equalTo(uid);   //query to load user specific posts
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -121,12 +116,9 @@ public class OtherUserProfileActivity extends AppCompatActivity {
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     ModelPost myPosts = ds.getValue(ModelPost.class);
 
-                    //add to list
                     postList.add(myPosts);
 
-                    //adapter
                     adapterPost = new AdapterPost(getApplicationContext(), postList);
-                    //set this adapter to recycler view
                     userPostRecyclerView.setAdapter(adapterPost);
                 }
             }

@@ -1,14 +1,19 @@
 package com.example.socially.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.text.format.DateFormat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,12 +25,17 @@ import com.example.socially.CommentActivity;
 import com.example.socially.OtherUserProfileActivity;
 import com.example.socially.R;
 import com.example.socially.models.ModelPost;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -38,7 +48,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     Context context;
     List<ModelPost> postList;
-
+    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
     String myUid;
 
     private DatabaseReference likesRef; //for likes database nodes
@@ -46,7 +56,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     boolean mProcessLike = false;
 
-    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
     public AdapterPost(Context mcontext, List<ModelPost> postList) {
         this.context = mcontext;
         this.postList = postList;
@@ -115,6 +124,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         if(postImage.equals("noImage")) {
             holder.publishPostImageIV.setVisibility(View.GONE);
         } else {
+            holder.publishPostImageIV.setVisibility(View.VISIBLE);
             try {
                 Picasso.get().load(postImage).into(holder.publishPostImageIV);
             }
@@ -127,7 +137,8 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         holder.moreOptionsIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "More Options", Toast.LENGTH_SHORT).show();
+                showMoreOptions(holder.moreOptionsIV, uid, myUid, postID, postImage);
+                //Toast.makeText(context, "More Options", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -195,6 +206,94 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             }
         });
 
+    }
+
+    private void showMoreOptions(ImageView moreOptionsIV, String uid, String myUid, String postID, String postImage) {
+        PopupMenu popupMenu = new PopupMenu(context, moreOptionsIV, Gravity.END);
+        //show delete option in only posts of currently signed in user
+        if(uid.equals(myUid)) {
+            popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete Post");
+        }
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                if(id == 0) {
+                    //delete is clicked
+                    beginDelete(postID, postImage);
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
+    }
+
+    private void beginDelete(String postID, String postImage) {
+        if(postImage.equals("noImage")) {
+            deleteWithoutImage(postID);
+        } else {
+            deleteWithImage(postID, postImage);
+        }
+    }
+
+    private void deleteWithImage(String postID, String postImage) {
+        final ProgressDialog pd = new ProgressDialog(context);
+        pd.setMessage("Deleting Post...");
+
+        StorageReference picRef = FirebaseStorage.getInstance().getReferenceFromUrl(postImage);
+        picRef.delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Query fquery = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("postID").equalTo(postID);
+                        fquery.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for(DataSnapshot ds : snapshot.getChildren()) {
+                                    ds.getRef().removeValue();
+                                }
+                                Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_SHORT).show();
+                                pd.dismiss();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(context, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void deleteWithoutImage(String postID) {
+
+        final ProgressDialog pd = new ProgressDialog(context);
+        pd.setMessage("Deleting Post...");
+
+        Query fquery = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("postID").equalTo(postID);
+        fquery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    ds.getRef().removeValue();
+                }
+                Toast.makeText(context, "Deleted Successfully", Toast.LENGTH_SHORT).show();
+                pd.dismiss();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void setLikes(MyHolder myHolder, String postKey) {

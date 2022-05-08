@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -165,6 +168,32 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+//    private void showMoreOptions(){
+//        View navigation;
+//        PopupMenu popupMenu = new PopupMenu(this,navigation, Gravity.END);
+//        popupMenu.getMenu().add(Menu.NONE,0,0,"Notifications");
+//        popupMenu.getMenu().add(Menu.NONE,0,0,"Group Chats");
+//
+//        //menu clicks
+//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem menuItem) {
+//                int id = menuItem.getItemId();
+//                if(id==0){
+//                    //notification clicked
+//
+//                }
+//                else if (id == 1) {
+//                    //group chats clicked
+//                }
+//
+//                return false;
+//            }
+//        });
+//
+//
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -184,7 +213,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(!TextUtils.isEmpty(newText)) {
