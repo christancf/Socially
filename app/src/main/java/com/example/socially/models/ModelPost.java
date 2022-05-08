@@ -2,12 +2,12 @@ package com.example.socially.models;
 
 public class ModelPost {
 
-    String uid, firstName, lastName, email, profileImage, postID, postContent, postImage, publishTime;
+    String uid, firstName, lastName, email, profileImage, postID, postContent, postImage, publishTime, postLikes, pComments;
 
     public ModelPost() {
     }
 
-    public ModelPost(String uid, String firstName, String lastName, String email, String profileImage, String postID, String postContent, String postImage, String publishTime) {
+    public ModelPost(String uid, String firstName, String lastName, String email, String profileImage, String postID, String postContent, String postImage, String publishTime, String postLikes, String pComments) {
         this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,6 +17,8 @@ public class ModelPost {
         this.postContent = postContent;
         this.postImage = postImage;
         this.publishTime = publishTime;
+        this.postLikes = postLikes;
+        this.pComments = pComments;
     }
 
     public String getUid() {
@@ -89,5 +91,21 @@ public class ModelPost {
 
     public void setPublishTime(String publishTime) {
         this.publishTime = publishTime;
+    }
+
+    public String getPostLikes() {
+        return postLikes;
+    }
+
+    public void setPostLikes(String postLikes) {
+        this.postLikes = postLikes;
+    }
+
+    public String getPComments() {
+        return pComments;
+    }
+
+    public void setPComments(String pComments) {
+        this.pComments = pComments;
     }
 }

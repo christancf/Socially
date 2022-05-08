@@ -17,6 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/profile_layout"
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -103,10 +104,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_comments"
-                android:text="0 comments"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="12dp"
-                android:layout_marginStart="220dp"/>
+                android:layout_marginStart="20dp"/>
 
         </LinearLayout>
 
@@ -123,53 +123,78 @@
             android:padding="10dp"
             android:layout_gravity="center_vertical">
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/iv_like"
-                android:src="@drawable/ic_like_outlined"
-                android:layout_marginStart="20dp"/>
+                android:orientation="horizontal"
+                android:id="@+id/like_layout">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_like_action"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Like"
-                android:textSize="15dp"
-                android:layout_marginStart="8dp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_like"
+                    android:src="@drawable/ic_like_outlined"
+                    android:layout_marginStart="20dp"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/iv_comment"
-                android:src="@drawable/ic_comment_outlined"
-                android:layout_marginStart="40dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_like_action"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Like"
+                    android:textSize="15dp"
+                    android:layout_marginStart="8dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_comment_action"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Comment"
-                android:textSize="15dp"
-                android:layout_marginStart="8dp"/>
+            </LinearLayout>
 
-            <ImageView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/iv_share"
-                android:src="@drawable/ic_share_outlined"
-                android:layout_marginStart="50dp"/>
+                android:orientation="horizontal"
+                android:id="@+id/comment_layout">
 
-            <TextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_comment"
+                    android:src="@drawable/ic_comment_outlined"
+                    android:layout_marginStart="40dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_comment_action"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Comment"
+                    android:textSize="15dp"
+                    android:layout_marginStart="8dp"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_share_action"
-                android:fontFamily="@font/poppins_medium"
-                android:text="Share"
-                android:textSize="15dp"
-                android:layout_marginStart="8dp"/>
+                android:orientation="horizontal"
+                android:id="@+id/share_layout">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/iv_share"
+                    android:src="@drawable/ic_share_outlined"
+                    android:layout_marginStart="50dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_share_action"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Share"
+                    android:textSize="15dp"
+                    android:layout_marginStart="8dp"/>
+
+            </LinearLayout>
 
 <!--            <Button-->
 <!--                android:id="@+id/btn_like"-->
