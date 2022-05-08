@@ -401,6 +401,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         cancelTV.setOnClickListener(view -> logOutDialog.cancel());
         logOutTV.setOnClickListener(view -> {
+            logOutDialog.cancel();
             mAuth.signOut();
             checkUserStatus();
         });
