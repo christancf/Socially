@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -29,6 +30,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.socially.notifications.Token;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -44,6 +47,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
     ImageView profileImageIV, moreOptionsIV, coverImageIV, backArrowIV;
     TextView profileIdTV;
     //User Name
+//    String userName;
+    String mUID;
     String userName, userEmail, userProfilePicture, userCoverPicture;
 
     //permission constants
@@ -110,6 +116,18 @@ public class ProfileActivity extends AppCompatActivity {
         profileIdTV = findViewById(R.id.profileIdTV);
         backArrowIV = findViewById(R.id.backArrow);
 
+        checkUserStatus();
+
+        //update token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(instanceIdResult -> {
+            try {
+                String tokenRefresh = instanceIdResult.getToken();
+                updateToken(tokenRefresh);
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        });
+
         //OnClick
         moreOptionsIV.setOnClickListener(view -> showMoreOptions());
         backArrowIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
@@ -119,12 +137,48 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        checkUserStatus();
+        super.onResume();
+    }
+
+    public void updateToken(String token) {
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Tokens");
+        Token mToken = new Token(token);
+        ref.child(mUID).setValue(mToken);
+    }
+
     private void checkUserStatus(){
         user = mAuth.getCurrentUser();
         Log.d(TAG, "checkUserStatus: function called. User = " + user);
         if(user != null){
             userEmail = user.getEmail();
             setupUserProfile();
+            //for notifications function
+            mUID = user.getUid();
+
+            //save uid of currently signed in user in shared preferences
+            SharedPreferences sp = getSharedPreferences("SP_USER", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("Current_USERID", mUID);
+            editor.apply();
+
+            FirebaseDatabase db = FirebaseDatabase.getInstance(firebaseURL);
+            DatabaseReference ref = db.getReference("Users");
+            ref.child(user.getUid()).get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    Map<String, Object> UserData = (Map<String, Object>) task.getResult().getValue();
+
+                    System.out.println(UserData.get("firstName"));
+                    userName = (String) UserData.get("firstName")+ " " +UserData.get("lastName");
+                    profileIdTV.setText(userName);
+                }
+            });
         }else{
             startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
             finish();
