@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PostDetailActivity">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <!--Actual post-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="3dp"
+                app:cardElevation="3dp"
+                app:contentPadding="5dp"
+                app:cardUseCompatPadding="true"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/profile_layout"
+                        android:orientation="horizontal">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:id="@+id/civ_post_profile_pic"
+                            android:scaleType="centerCrop" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_user_name"
+                                android:fontFamily="@font/poppins_medium"
+                                android:textSize="16dp"
+                                android:text="Name"
+                                android:textColor="@color/black"
+                                android:layout_gravity="center_vertical"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_time"
+                                android:fontFamily="@font/poppins"
+                                android:textSize="12dp"
+                                android:text="time"
+                                android:textColor="@color/cardview_dark_background"
+                                android:layout_gravity="center_vertical"/>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/iv_more_options"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_baseline_more_horiz_24"
+                            android:layout_marginEnd="10dp"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_show_post_content"
+                        android:fontFamily="@font/poppins"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:text="Content"
+                        android:padding="5dp"
+                        android:layout_marginTop="15dp"
+                        android:autoLink="all"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/iv_publish_post_image"
+                        android:background="@color/white"
+                        android:layout_marginTop="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="5dp"
+                        android:layout_gravity="center_vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_likes"
+                            android:text="0 likes"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="12dp"
+                            android:layout_marginStart="20dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tv_comments"
+                            android:text="0 comments"
+                            android:fontFamily="@font/poppins_medium"
+                            android:textSize="12dp"
+                            android:layout_marginStart="220dp"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="10dp"
+                        android:layout_gravity="center_vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:id="@+id/like_layout">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/iv_like"
+                                android:src="@drawable/ic_like_outlined"
+                                android:layout_marginStart="20dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_like_action"
+                                android:fontFamily="@font/poppins_medium"
+                                android:text="Like"
+                                android:textSize="15dp"
+                                android:layout_marginStart="8dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:id="@+id/share_layout">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/iv_share"
+                                android:src="@drawable/ic_share_outlined"
+                                android:layout_marginStart="200dp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tv_share_action"
+                                android:fontFamily="@font/poppins_medium"
+                                android:text="Share"
+                                android:textSize="15dp"
+                                android:layout_marginStart="8dp"/>
+
+                        </LinearLayout>
+
+                        <!--            <Button-->
+                        <!--                android:id="@+id/btn_like"-->
+                        <!--                android:layout_width="wrap_content"-->
+                        <!--                android:layout_height="wrap_content"-->
+                        <!--                android:layout_weight="1"-->
+                        <!--                android:drawableLeft="@drawable/ic_like_outlined"-->
+                        <!--                android:drawablePadding="5dp"-->
+                        <!--                android:fontFamily="@font/poppins"-->
+                        <!--                android:text="@string/btn_like_post"-->
+                        <!--                android:textSize="12dp"/>-->
+
+                        <!--            <Button-->
+                        <!--                android:id="@+id/btn_comment"-->
+                        <!--                android:layout_width="wrap_content"-->
+                        <!--                android:layout_height="wrap_content"-->
+                        <!--                android:layout_weight="1"-->
+                        <!--                android:drawableLeft="@drawable/ic_comment_outlined"-->
+                        <!--                android:drawablePadding="5dp"-->
+                        <!--                android:fontFamily="@font/poppins"-->
+                        <!--                android:text="@string/btn_comment_post" />-->
+
+                        <!--            <Button-->
+                        <!--                android:id="@+id/btn_share"-->
+                        <!--                android:layout_width="wrap_content"-->
+                        <!--                android:layout_height="wrap_content"-->
+                        <!--                android:layout_weight="1"-->
+                        <!--                android:drawableLeft="@drawable/ic_share_outlined"-->
+                        <!--                android:drawablePadding="5dp"-->
+                        <!--                android:fontFamily="@font/poppins"-->
+                        <!--                android:text="@string/btn_share_post" />-->
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- List of comments-->
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:id="@+id/civ_avatar"
+            android:src="@drawable/ic_default_image"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_toEndOf="@+id/civ_avatar"
+            android:layout_toStartOf="@+id/btn_send"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:layout_toRightOf="@id/civ_avatar"
+            android:layout_toLeftOf="@+id/btn_send"
+            android:hint="Type a comment..."
+            android:inputType="textCapSentences|textMultiLine"
+            android:fontFamily="@font/poppins"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/btn_send"
+            android:src="@drawable/ic_send"
+            android:background="@color/white"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
