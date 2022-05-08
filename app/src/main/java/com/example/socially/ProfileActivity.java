@@ -12,11 +12,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
@@ -28,7 +25,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -121,22 +117,14 @@ public class ProfileActivity extends AppCompatActivity {
         coverImageIV = findViewById(R.id.coverImageIV);
         profileIdTV = findViewById(R.id.profileIdTV);
         backArrowIV = findViewById(R.id.backArrow);
-        userPostRecyclerView = findViewById(R.id.recycler_view_user_post);
+
 
         //OnClick
         moreOptionsIV.setOnClickListener(view -> showMoreOptions());
         backArrowIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
         profileImageIV.setOnClickListener(view -> showMoreProfileOptions());
 
-        postList = new ArrayList<>();
-
-        checkUserStatus();
-        loadMyPosts();
-
-
-    }
-
-    private void loadMyPosts() {
+        userPostRecyclerView = findViewById(R.id.recycler_view_user_post);
         //linear layout for recycler view
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         //show latest post first
@@ -145,8 +133,16 @@ public class ProfileActivity extends AppCompatActivity {
         //set this layout to recycler view
         userPostRecyclerView.setLayoutManager(layoutManager);
 
+        postList = new ArrayList<>();
+
+        checkUserStatus();
+        loadMyPosts();
+    }
+
+    private void loadMyPosts() {
+
         //init post list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Path");
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
         //query to load posts
         Query query = ref.orderByChild("uid").equalTo(uid);
         //get all data from this ref
@@ -159,49 +155,6 @@ public class ProfileActivity extends AppCompatActivity {
 
                     //add to list
                     postList.add(myPosts);
-
-                    //adapter
-                    adapterPost = new AdapterPost(getApplicationContext(), postList);
-                    //set this adapter to recycler view
-                    userPostRecyclerView.setAdapter(adapterPost);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ProfileActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void searchMyPosts(final String searchQuery) {
-        //linear layout for recycler view
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //show latest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recycler view
-        userPostRecyclerView.setLayoutManager(layoutManager);
-
-        //init post list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Path");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
-        //get all data from this ref
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                postList.clear();
-                for(DataSnapshot ds : snapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
-
-                    //add to list
-                    if(myPosts.getPostContent().toLowerCase().contains(searchQuery.toLowerCase())
-                            || myPosts.getFirstName().toLowerCase().contains(searchQuery.toLowerCase())
-                            || myPosts.getLastName().toLowerCase().contains(searchQuery.toLowerCase())) {
-
-                        postList.add(myPosts);
-                    }
 
                     //adapter
                     adapterPost = new AdapterPost(getApplicationContext(), postList);
@@ -530,41 +483,41 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.post_menu, menu);
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.post_menu, menu);
+//
+//        MenuItem menuItem = menu.findItem(R.id.search);
+//        SearchView searchView = (SearchView) menuItem.getActionView();
+//        searchView.setQueryHint("Search post...");
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                if(!TextUtils.isEmpty(query)) {
+//                    searchMyPosts(query);
+//                } else {
+//                    loadMyPosts();
+//                }
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                if(!TextUtils.isEmpty(newText)) {
+//                    searchMyPosts(newText);
+//                } else {
+//                    loadMyPosts();
+//                }
+//                return false;
+//            }
+//        });
+//
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
-        MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Search post...");
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if(!TextUtils.isEmpty(query)) {
-                    searchMyPosts(query);
-                } else {
-                    loadMyPosts();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if(!TextUtils.isEmpty(newText)) {
-                    searchMyPosts(newText);
-                } else {
-                    loadMyPosts();
-                }
-                return false;
-            }
-        });
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-}
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        return super.onOptionsItemSelected(item);
+//    }
+ }

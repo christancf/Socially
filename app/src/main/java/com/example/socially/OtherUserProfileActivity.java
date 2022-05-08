@@ -2,16 +2,12 @@ package com.example.socially;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +31,13 @@ public class OtherUserProfileActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
+    FirebaseUser user;
     DatabaseReference db;
     private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
 
     String userName, userEmail, userProfilePicture, userCoverPicture;
 
-    ImageView profileImageIV, coverImageIV;
+    ImageView profileImageIV, coverImageIV, backArrowIV;
     TextView profileIdTV;
 
     TextView output;
@@ -67,6 +65,9 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         profileImageIV = findViewById(R.id.profileImageIV);
         coverImageIV = findViewById(R.id.coverImageIV);
         profileIdTV = findViewById(R.id.profileIdTV);
+        backArrowIV = findViewById(R.id.backArrow);
+
+        backArrowIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
 
         //recycler view
         userPostRecyclerView = findViewById(R.id.recycler_view_user_post);
@@ -109,7 +110,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         userPostRecyclerView.setLayoutManager(layoutManager);
 
         //init post list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Path");
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
         //query to load posts
         Query query = ref.orderByChild("uid").equalTo(uid);
         //get all data from this ref
@@ -137,98 +138,53 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void searchHisPosts(final String searchQuery) {
-        //linear layout for recycler view
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        //show latest post first
-        layoutManager.setStackFromEnd(true);
-        layoutManager.setReverseLayout(true);
-        //set this layout to recycler view
-        userPostRecyclerView.setLayoutManager(layoutManager);
-
-        //init post list
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Path");
-        //query to load posts
-        Query query = ref.orderByChild("uid").equalTo(uid);
-        //get all data from this ref
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                postList.clear();
-                for(DataSnapshot ds : snapshot.getChildren()) {
-                    ModelPost myPosts = ds.getValue(ModelPost.class);
-
-                    //add to list
-                    if(myPosts.getPostContent().toLowerCase().contains(searchQuery.toLowerCase())
-                            || myPosts.getFirstName().toLowerCase().contains(searchQuery.toLowerCase())
-                            || myPosts.getLastName().toLowerCase().contains(searchQuery.toLowerCase())) {
-
-                        postList.add(myPosts);
-                    }
-
-                    //adapter
-                    adapterPost = new AdapterPost(getApplicationContext(), postList);
-                    //set this adapter to recycler view
-                    userPostRecyclerView.setAdapter(adapterPost);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(OtherUserProfileActivity.this, ""+error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private void checkUserStatus(){
-        FirebaseUser user = firebaseAuth.getCurrentUser();
+       user = firebaseAuth.getCurrentUser();
         //Log.d(TAG, "checkUserStatus: function called. User = " + user);
         if(user != null){
-//            userEmail = user.getEmail();
-//            setupUserProfile();
+            userEmail = user.getEmail();
+            setupUserProfile();
         }else{
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.post_menu, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Search post...");
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+    private void setupUserProfile() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+        Query query = ref.orderByChild("uid").equalTo(uid);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                if(!TextUtils.isEmpty(query)) {
-                    searchHisPosts(query);
-                } else {
-                    loadHisPosts();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds: snapshot.getChildren()) {
+                    System.out.println(ds);
+                    userName = "" + ds.child("firstName").getValue() + " " + ds.child("lastName").getValue();
+                    userProfilePicture = "" + ds.child("profileImage").getValue();
+                    userCoverPicture = "" + ds.child("coverImage").getValue();
                 }
-                return false;
+                profileIdTV.setText(userName);
+                setProfileImage(userProfilePicture, userCoverPicture);
             }
 
             @Override
-            public boolean onQueryTextChange(String newText) {
-                if(!TextUtils.isEmpty(newText)) {
-                    searchHisPosts(newText);
-                } else {
-                    loadHisPosts();
-                }
-                return false;
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-
-        return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        //if(id == R.id.action_lo)
-        return super.onOptionsItemSelected(item);
+    private void setProfileImage(String profile_img, String cover_img) {
+        System.out.println(profile_img);
+        System.out.println(cover_img);
+        try {
+            Picasso.get().load(profile_img).into(profileImageIV);
+        }catch (Exception e){
+
+        }
+        try {
+            Picasso.get().load(cover_img).into(coverImageIV);
+        }catch (Exception e){
+            System.out.println(e);
+        }
     }
 }
