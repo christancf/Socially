@@ -98,7 +98,13 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         holder.userNameTV.setText(firstName + " " + lastName);
         holder.timeTV.setText(pTime);
         holder.showPostContentTV.setText(postContent);
-        holder.likesTV.setText(postLikes + "Likes");
+
+        try{
+            if(!postLikes.isEmpty()) {
+                if (postLikes.equals("1")) holder.likesTV.setText(postLikes + " Like");
+                else holder.likesTV.setText(postLikes + " Likes");
+            }
+        } catch (Exception e) {}
 
         try{
             if(!postComments.isEmpty()) {
@@ -146,28 +152,42 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             @Override
             public void onClick(View view) {
                 System.out.println(postList.get(position).getPostLikes());
-                int pLikes = Integer.parseInt(postList.get(position).getPostLikes());
+                String pLikes = postList.get(position).getPostLikes();
                 System.out.println(pLikes);
 
                 mProcessLike = true;
 
                 //get id of the post clicked
-                String postIDe = postList.get(pLikes).getPostID();
+                String postIDe = postList.get(position).getPostID();
                 likesRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(mProcessLike) {
                             if(snapshot.child(postIDe).hasChild(myUid)) {
                                 //already liked, so remove like
-                                postsRef.child(postIDe).child("postLikes").setValue(""+(pLikes - 1));
-                                likesRef.child(postIDe).child(myUid).removeValue();
-                                mProcessLike = false;
+                                try{
+                                    int newLikeCount = Integer.parseInt(pLikes) - 1;
+                                    postsRef.child(postIDe).child("postLikes").setValue("" +newLikeCount);
+                                    likesRef.child(postIDe).child(myUid).removeValue();
+                                    mProcessLike = false;
+                                } catch (NumberFormatException e) {
+//                                    postsRef.child(postIDe).child("postLikes").setValue("1");
+//                                    likesRef.child(postIDe).child(myUid).setValue("Liked");
+//                                    mProcessLike = false;
+                                }
 
                             } else {
                                 //not liked, like it
-                                postsRef.child(postIDe).child("PostLikes").setValue(""+(pLikes + 1));
-                                likesRef.child(postIDe).child(myUid).setValue("Liked");
-                                mProcessLike = false;
+                                try{
+                                    int newLikeCount = Integer.parseInt(pLikes) + 1;
+                                    postsRef.child(postIDe).child("postLikes").setValue("" +newLikeCount);
+                                    likesRef.child(postIDe).child(myUid).setValue("Liked");
+                                    mProcessLike = false;
+                                } catch (NumberFormatException e) {
+                                    postsRef.child(postIDe).child("postLikes").setValue("1");
+                                    likesRef.child(postIDe).child(myUid).setValue("Liked");
+                                    mProcessLike = false;
+                                }
                             }
                         }
                     }
@@ -301,15 +321,12 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(postKey).hasChild(myUid)) {
-//                    Resources res = context.getResources();
-//                    Drawable myImage = ResourcesCompat.getDrawable(res, R.drawable.ic_like_filled_orange, null);
-//                    myHolder.likeIV.setImageURI(Uri.parse(myImage));
                     Glide.with(context).load(R.drawable.ic_like_filled_orange).into(myHolder.likeIV);
-                    myHolder.likesTV.setText("Liked");
+                    myHolder.likeActionTV.setText("Liked");
 
                 } else {
                     Glide.with(context).load(R.drawable.ic_like_outlined).into(myHolder.likeIV);
-                    myHolder.likesTV.setText("Like");
+                    myHolder.likeActionTV.setText("Like");
                 }
             }
 
@@ -330,7 +347,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
         //views from row_post.xml
         CircleImageView postProfilePictureCIV;
-        TextView userNameTV, timeTV, showPostContentTV, likesTV, commentsTV;
+        TextView userNameTV, timeTV, showPostContentTV, likesTV, commentsTV, likeActionTV;
         ImageView moreOptionsIV, publishPostImageIV, likeIV, commentIV, shareIV;
         LinearLayout profileLayoutLL, likeLayoutLL, commentLayoutLL, shareLayoutLL;
 
@@ -354,6 +371,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             likeLayoutLL = itemView.findViewById(R.id.like_layout);
             commentLayoutLL = itemView.findViewById(R.id.comment_layout);
             shareLayoutLL = itemView.findViewById(R.id.share_layout);
+            likeActionTV = itemView.findViewById(R.id.tv_like_action);
         }
     }
 }
