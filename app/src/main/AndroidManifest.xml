@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,11 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Socially">
-
         <activity
             android:name=".EditPostActivity"
             android:exported="false" />
-
         <activity
             android:name=".activities.ChatActivity"
             android:exported="false"
@@ -33,13 +31,12 @@
         <activity
             android:name=".CreatePostActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.Socially.NoActionBar"/>
-
+            android:theme="@style/Theme.Socially.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".OtherUserProfileActivity"
             android:exported="false"
-            android:theme="@style/Theme.Socially.NoActionBar"/>
+            android:theme="@style/Theme.Socially.NoActionBar" />
         <activity
             android:name=".UsersActivity"
             android:exported="false" />
@@ -81,7 +78,7 @@
         <activity
             android:name=".HomeActivity"
             android:exported="false"
-            android:theme="@style/Theme.Socially.whiteActionBar"/>
+            android:theme="@style/Theme.Socially.whiteActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"
