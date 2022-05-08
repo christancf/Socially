@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentRV"
+            android:id="@+id/comment_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -30,23 +30,23 @@
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/userImageIV"
+            android:id="@+id/comment_userImageIV"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="3dp"
             android:src="@drawable/plus_ultra"/>
 
         <EditText
-            android:id="@+id/commentContentET"
+            android:id="@+id/comment_contentET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/userImageIV"
-            android:layout_toStartOf="@+id/commentBtnIV"
+            android:layout_toEndOf="@+id/comment_userImageIV"
+            android:layout_toStartOf="@+id/comment_submitBtnIV"
             android:layout_margin="1dp"
             />
 
         <ImageView
-            android:id="@+id/commentBtnIV"
+            android:id="@+id/comment_submitBtnIV"
             android:layout_width="40dp"
             android:layout_centerInParent="true"
             android:layout_height="wrap_content"

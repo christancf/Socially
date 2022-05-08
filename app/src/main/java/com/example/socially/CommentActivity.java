@@ -39,10 +39,10 @@ public class CommentActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
     private void initializeVariables(){
-        commentRV = findViewById(R.id.commentRV);
-        userImageIV = findViewById(R.id.userImageIV);
-        commentBtnIV = findViewById(R.id.commentBtnIV);
-        commentContentET = findViewById(R.id.commentContentET);
+        commentRV = findViewById(R.id.comment_recyclerView);
+        userImageIV = findViewById(R.id.row_comment_userImageIV);
+        commentBtnIV = findViewById(R.id.comment_submitBtnIV);
+        commentContentET = findViewById(R.id.comment_contentET);
     }
     @Override
     public boolean onSupportNavigateUp() {
