@@ -106,7 +106,7 @@
                 android:id="@+id/tv_comments"
                 android:fontFamily="@font/poppins_medium"
                 android:textSize="12dp"
-                android:layout_marginStart="220dp"/>
+                android:layout_marginStart="20dp"/>
 
         </LinearLayout>
 

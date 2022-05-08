@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.socially.CommentActivity;
 import com.example.socially.OtherUserProfileActivity;
 import com.example.socially.R;
 import com.example.socially.models.ModelPost;
@@ -55,12 +56,13 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     boolean mProcessLike = false;
 
+    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
     public AdapterPost(Context mcontext, List<ModelPost> postList) {
         this.context = mcontext;
         this.postList = postList;
         myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        likesRef = FirebaseDatabase.getInstance().getReference().child("Likes");
-        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
+        likesRef = FirebaseDatabase.getInstance(firebaseURL).getReference().child("Likes");
+        postsRef = FirebaseDatabase.getInstance(firebaseURL).getReference().child("Posts");
     }
 
     @NonNull
@@ -86,6 +88,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         String postImage = postList.get(position).getPostImage();
         String publishTime = postList.get(position).getPublishTime();
         String postLikes = postList.get(position).getPostLikes();
+        String postComments = postList.get(position).getPComments();
 
         //convert timestamp to dd/mm/yyyy hh:mm am/pm
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -97,6 +100,13 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         holder.timeTV.setText(pTime);
         holder.showPostContentTV.setText(postContent);
         holder.likesTV.setText(postLikes + "Likes");
+
+        try{
+            if(!postComments.isEmpty()) {
+                if(postComments.equals("1")) holder.commentsTV.setText(postComments + " Comment");
+                else holder.commentsTV.setText(postComments + " Comments");
+            }
+        }catch (Exception e){}
 
         //set likes for each post
         setLikes(holder, postID);
@@ -174,7 +184,10 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         holder.commentLayoutLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Comment", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, CommentActivity.class);
+                intent.putExtra("postId", postID);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             }
         });
 
