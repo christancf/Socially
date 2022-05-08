@@ -7,6 +7,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -54,7 +56,7 @@ public class ChatlistActivity extends AppCompatActivity {
         //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
         actionBar.setTitle(Html.fromHtml("<font color='#000000'>Chats</font>"));
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //Setting up a back arrow
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
@@ -89,6 +91,21 @@ public class ChatlistActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.chat_option, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.createGroup) {
+            //change to groupcreateactivity
+            startActivity(new Intent(this, ChatActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadChats() {
