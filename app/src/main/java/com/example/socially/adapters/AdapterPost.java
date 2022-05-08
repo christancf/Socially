@@ -56,7 +56,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
     boolean mProcessLike = false;
 
-    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
     public AdapterPost(Context mcontext, List<ModelPost> postList) {
         this.context = mcontext;
         this.postList = postList;
