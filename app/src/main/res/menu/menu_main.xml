@@ -5,11 +5,12 @@
 
     <item android:id="@+id/action_create_group"
         android:title="Create Group"
-        app:showsAsAction="always"
+
         android:icon="@drawable/ic_creategroup_white"
 
 
 
         />
+<!--    app:showsAsAction="always"-->
 
 </menu>

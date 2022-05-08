@@ -40,6 +40,8 @@ import java.util.HashMap;
 
 public class GroupCreateActivity extends AppCompatActivity {
 
+    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
+
     //permission constants
     private static final int CAMERA_REQUEST_CODE=100;
     private static final int STORAGE_REQUEST_CODE=200;
@@ -79,7 +81,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         actionBar= getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Create group</font>"));
+        //actionBar.setTitle(Html.fromHtml("<font color='#000000'>Create group</font>"));
 
         //init UI views
         groupIconIv=findViewById(R.id.groupIconIv);
@@ -150,7 +152,7 @@ public class GroupCreateActivity extends AppCompatActivity {
             //image and name path
             String fileNameAndPath = "Group_Imgs/" + "image"+g_timestamp;
 
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference(fileNameAndPath);
+            StorageReference storageReference = FirebaseStorage.getInstance(firebaseURL).getReference(fileNameAndPath);
             storageReference.putFile(image_uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -186,7 +188,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         hashMap.put("createBy",""+firebaseAuth.getUid());
 
         //create group
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Groups");
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Groups");
         ref.child(g_timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -198,7 +200,7 @@ public class GroupCreateActivity extends AppCompatActivity {
                 hashMap1.put("role","creator");
                 hashMap1.put("timestamp",g_timestamp);
 
-                DatabaseReference ref1 = FirebaseDatabase.getInstance().getReference("Groups");
+                DatabaseReference ref1 = FirebaseDatabase.getInstance(firebaseURL).getReference("Groups");
                 ref1.child(g_timestamp).child("participants").child(firebaseAuth.getUid()).setValue(hashMap1).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
