@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socially">
         <activity
+            android:name=".GroupCreateActivity"
+            android:exported="false" />
+        <activity
             android:name=".CommentActivity"
             android:exported="false"
             android:theme="@style/Theme.Socially.whiteActionBar"/>
@@ -26,7 +29,6 @@
             android:exported="false"
             android:theme="@style/Theme.Socially.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".activities.ChatlistActivity"
             android:exported="false"
