@@ -41,6 +41,8 @@ public class HomeActivity extends AppCompatActivity {
     List<ModelPost> postList;
     AdapterPost adapterPost;
 
+    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +101,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadPosts() {
         //path of all posts
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
         //get all data from this ref
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -128,7 +130,7 @@ public class HomeActivity extends AppCompatActivity {
     private void searchPosts(String searchQuery) {
 
         //path of all posts
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
         //get all data from this ref
         ref.addValueEventListener(new ValueEventListener() {
             @Override
