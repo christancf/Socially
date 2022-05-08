@@ -86,7 +86,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         checkUserStatus();
         loadHisPosts();
 
-//        UID = getIntent().getStringExtra("UID");
+        UID = getIntent().getStringExtra("UID");
 //        output.setText(UID);
 
 
