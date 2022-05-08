@@ -66,7 +66,7 @@ public class CommentActivity extends AppCompatActivity {
     private void postComment() {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Adding comment...");
-
+        progressDialog.show();
         String comment = commentContentET.getText().toString().trim();
 
         if(TextUtils.isEmpty(comment)){

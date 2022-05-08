@@ -16,7 +16,8 @@
         android:theme="@style/Theme.Socially">
         <activity
             android:name=".CommentActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Socially.whiteActionBar"/>
         <activity
             android:name=".EditPostActivity"
             android:exported="false" />
