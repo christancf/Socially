@@ -9,4 +9,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     android:icon="@drawable/ic_baseline_more_vert_chatsmenu"
     app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
+    <item android:id="@+id/nav_more"
+        android:title="More"
+        android:icon="@drawable/ic_more_blackk" />
+
 </menu>
