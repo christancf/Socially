@@ -4,6 +4,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.EditText;
@@ -33,7 +35,6 @@ public class CommentActivity extends AppCompatActivity {
         //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
         actionBar.setTitle(Html.fromHtml("<font color='#000000'>Comments</font>"));
-        //actionBar.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
