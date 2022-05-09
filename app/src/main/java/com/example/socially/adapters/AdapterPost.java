@@ -1,19 +1,20 @@
 package com.example.socially.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.format.DateFormat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.socially.CommentActivity;
+import com.example.socially.CreatePostActivity;
 import com.example.socially.OtherUserProfileActivity;
 import com.example.socially.R;
 import com.example.socially.models.ModelPost;
@@ -72,7 +74,6 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
 
         return new MyHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -140,64 +141,61 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         }
 
         //handle more, like, comment and share
-        holder.moreOptionsIV.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showMoreOptions(holder.moreOptionsIV, uid, myUid, postID, postImage);
-                //Toast.makeText(context, "More Options", Toast.LENGTH_SHORT).show();
+        holder.moreOptionsIV.setOnClickListener(view -> {
+            if(uid.equals(myUid)) {
+                showPostOptions(view, true, postID, postImage);
+            } else {
+                showPostOptions(view, false, postID, postImage);
             }
         });
 
-        holder.likeLayoutLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println(postList.get(position).getPostLikes());
-                String pLikes = postList.get(position).getPostLikes();
-                System.out.println(pLikes);
+        holder.likeLayoutLL.setOnClickListener(view -> {
+            System.out.println(postList.get(position).getPostLikes());
+            String pLikes = postList.get(position).getPostLikes();
+            System.out.println(pLikes);
 
-                mProcessLike = true;
+            mProcessLike = true;
 
-                //get id of the post clicked
-                String postIDe = postList.get(position).getPostID();
-                likesRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(mProcessLike) {
-                            if(snapshot.child(postIDe).hasChild(myUid)) {
-                                //already liked, so remove like
-                                try{
-                                    int newLikeCount = Integer.parseInt(pLikes) - 1;
-                                    postsRef.child(postIDe).child("postLikes").setValue("" +newLikeCount);
-                                    likesRef.child(postIDe).child(myUid).removeValue();
-                                    mProcessLike = false;
-                                } catch (NumberFormatException e) {
+            //get id of the post clicked
+            String postIDe = postList.get(position).getPostID();
+            likesRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if(mProcessLike) {
+                        if(snapshot.child(postIDe).hasChild(myUid)) {
+                            //already liked, so remove like
+                            try{
+                                int newLikeCount = Integer.parseInt(pLikes) - 1;
+                                postsRef.child(postIDe).child("postLikes").setValue("" +newLikeCount);
+                                likesRef.child(postIDe).child(myUid).removeValue();
+                                mProcessLike = false;
+                            } catch (NumberFormatException e) {
 //                                    postsRef.child(postIDe).child("postLikes").setValue("1");
 //                                    likesRef.child(postIDe).child(myUid).setValue("Liked");
 //                                    mProcessLike = false;
-                                }
+                            }
 
-                            } else {
-                                //not liked, like it
-                                try{
-                                    int newLikeCount = Integer.parseInt(pLikes) + 1;
-                                    postsRef.child(postIDe).child("postLikes").setValue("" +newLikeCount);
-                                    likesRef.child(postIDe).child(myUid).setValue("Liked");
-                                    mProcessLike = false;
-                                } catch (NumberFormatException e) {
-                                    postsRef.child(postIDe).child("postLikes").setValue("1");
-                                    likesRef.child(postIDe).child(myUid).setValue("Liked");
-                                    mProcessLike = false;
-                                }
+                        } else {
+                            //not liked, like it
+                            try{
+                                int newLikeCount = Integer.parseInt(pLikes) + 1;
+                                postsRef.child(postIDe).child("postLikes").setValue("" +newLikeCount);
+                                likesRef.child(postIDe).child(myUid).setValue("Liked");
+                                mProcessLike = false;
+                            } catch (NumberFormatException e) {
+                                postsRef.child(postIDe).child("postLikes").setValue("1");
+                                likesRef.child(postIDe).child(myUid).setValue("Liked");
+                                mProcessLike = false;
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-                });
-            }
+                }
+            });
         });
 
         holder.commentLayoutLL.setOnClickListener(new View.OnClickListener() {
@@ -227,26 +225,57 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         });
 
     }
+    //show dialog options
+    private void showPostOptions(View view, boolean check, String postID, String postImage) {
+        final Dialog dialog = new Dialog(view.getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.user_post_options_layout);
 
-    private void showMoreOptions(ImageView moreOptionsIV, String uid, String myUid, String postID, String postImage) {
-        PopupMenu popupMenu = new PopupMenu(context, moreOptionsIV, Gravity.END);
-        //show delete option in only posts of currently signed in user
-        if(uid.equals(myUid)) {
-            popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete Post");
+        LinearLayout editPost = dialog.findViewById(R.id.editPostLL);
+        LinearLayout deletePost = dialog.findViewById(R.id.deletePostLL);
+        LinearLayout hidePost = dialog.findViewById(R.id.hidePostLL);
+
+        if(!check) {
+            editPost.setVisibility(view.GONE);
+            deletePost.setVisibility(view.GONE);
         }
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                if(id == 0) {
-                    //delete is clicked
-                    beginDelete(postID, postImage);
-                }
-                return false;
-            }
+
+        editPost.setOnClickListener(view1 -> {
+            Intent intent = new Intent(context, CreatePostActivity.class);
+            intent.putExtra("key", "editPost");
+            intent.putExtra("editPostID", postID);
+            context.startActivity(intent);
         });
-        popupMenu.show();
+
+        deletePost.setOnClickListener(view12 -> beginDelete(postID, postImage));
+        hidePost.setOnClickListener(view1 -> Toast.makeText(context, "Hide Post", Toast.LENGTH_SHORT).show());
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.bottomDialogAnimation;
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
+
+//    private void showMoreOptions(ImageView moreOptionsIV, String uid, String myUid, String postID, String postImage) {
+//        PopupMenu popupMenu = new PopupMenu(context, moreOptionsIV, Gravity.END);
+//        //show delete option in only posts of currently signed in user
+//        if(uid.equals(myUid)) {
+//            popupMenu.getMenu().add(Menu.NONE, 0, 0, "Delete Post");
+//        }
+//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem menuItem) {
+//                int id = menuItem.getItemId();
+//                if(id == 0) {
+//                    //delete is clicked
+//                    beginDelete(postID, postImage);
+//                }
+//                return false;
+//            }
+//        });
+//        popupMenu.show();
+//    }
 
     private void beginDelete(String postID, String postImage) {
         if(postImage.equals("noImage")) {
@@ -265,7 +294,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Query fquery = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("postID").equalTo(postID);
+                        Query fquery = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts").orderByChild("postID").equalTo(postID);
                         fquery.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -298,7 +327,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         final ProgressDialog pd = new ProgressDialog(context);
         pd.setMessage("Deleting Post...");
 
-        Query fquery = FirebaseDatabase.getInstance().getReference("Posts").orderByChild("postID").equalTo(postID);
+        Query fquery = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts").orderByChild("postID").equalTo(postID);
         fquery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
