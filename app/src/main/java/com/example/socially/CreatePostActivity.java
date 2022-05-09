@@ -132,7 +132,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
         //get info of current user
         userDbRef = FirebaseDatabase.getInstance(firebaseURL).getReference("Users");
-        Query query = userDbRef.orderByChild("email").equalTo(userEmail);
+        Query query = userDbRef.orderByChild("uid").equalTo(firebaseAuth.getCurrentUser().getUid());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -141,8 +141,14 @@ public class CreatePostActivity extends AppCompatActivity {
                     userLastName = "" + ds.child("lastName").getValue();
                     userEmail = "" + ds.child("email").getValue();
                     userProfilePicture = "" + ds.child("profileImage").getValue();
+                    //System.out.println(userProfilePicture);
                     userNameTV.setText("" + ds.child("firstName").getValue() + " " + ds.child("lastName").getValue());
-                    profilePictureCIV.setImageURI(Uri.parse("" + ds.child("profileImage").getValue()));
+
+                    try{
+                        Picasso.get().load(userProfilePicture).into(profilePictureCIV);
+                    } catch (Exception e) {
+
+                    }
                 }
             }
 
@@ -152,6 +158,12 @@ public class CreatePostActivity extends AppCompatActivity {
             }
 
         });
+
+//        try{
+//            Picasso.get().load(Uri.parse(userProfilePicture)).into(profilePictureCIV);
+//        } catch (Exception e) {
+//
+//        }
 
         closeIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
 
