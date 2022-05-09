@@ -86,6 +86,7 @@ public class OtherUserProfileActivity extends AppCompatActivity {
         checkUserStatus();
         loadHisPosts();
 
+        //chat
         UID = getIntent().getStringExtra("UID");
 //        output.setText(UID);
 

@@ -144,5 +144,6 @@
     <string name="what_s_your_gender_reg">What\'s your gender?</string>
     <string name="profile_get_image_camera">Camera</string>
     <string name="profile_get_image_gallery">Gallery</string>
+    <string name="tv_delete_post">Delete Post</string>
 
 </resources>

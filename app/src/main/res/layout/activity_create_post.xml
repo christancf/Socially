@@ -36,7 +36,7 @@
                         android:src="@drawable/ic_baseline_close_24" />
 
                     <TextView
-                        android:id="@+id/tv_create_post"
+                        android:id="@+id/tv_actionbar_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -58,6 +58,18 @@
                         android:text="@string/btn_publish_post"
                         android:textColor="@color/white"
                         android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_save_post"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="15dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="@string/tv_save_post"
+                        android:textColor="@color/btn_orange"
+                        android:textSize="16sp" />
 
                 </RelativeLayout>
 
