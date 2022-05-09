@@ -18,6 +18,10 @@
             android:name=".GroupCreateActivity"
             android:exported="false" />
         <activity
+            android:name=".GroupChatsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".EditPostActivity"
             android:exported="false" />
         <activity

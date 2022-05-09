@@ -1,12 +1,19 @@
 package com.example.socially;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,47 +28,67 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 
-public class GroupChatsFragment extends Fragment {
+public class GroupChatsActivity extends AppCompatActivity {
 
     private RecyclerView groupsRv;
 
     private FirebaseAuth firebaseAuth;
-
+    ActionBar actionBar;
     private ArrayList<ModelGroupChats> groupChats;
     private AdapterGroupChatList adapterGroupChatList;
 
-    public GroupChatsFragment() {
-        // Required empty public constructor
-    }
+    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-
-
-
+//    public GroupChatsFragment() {
+//        // Required empty public constructor
+//    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_group_chats, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_group_chats);
 
-        groupsRv=view.findViewById(R.id.groupsRv);
+        //Setting up a transparent actionbar
+        actionBar = getSupportActionBar();
+        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Chats</font>"));
+
+        //Setting up a back arrow
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_baseline_arrow_back_24);
+        upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+        actionBar.setHomeAsUpIndicator(upArrow);
+
+        groupsRv = findViewById(R.id.groupsRv);
+        groupsRv.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         firebaseAuth=FirebaseAuth.getInstance();
         loadGroupChats();
-        return view;
     }
+
+
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        View view= inflater.inflate(R.layout.activity_group_chats, container, false);
+//
+//        groupsRv=view.findViewById(R.id.groupsRv);
+//
+//        firebaseAuth=FirebaseAuth.getInstance();
+//        loadGroupChats();
+//        return view;
+//    }
 
     private void loadGroupChats() {
         groupChats=new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
+        DatabaseReference reference = FirebaseDatabase.getInstance(firebaseURL).getReference("Groups");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                groupChats.size();
+                groupChats.clear();
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
 
                     //if current user's uid exist in participants lis of group then show that group
@@ -71,7 +98,7 @@ public class GroupChatsFragment extends Fragment {
 
                     }
                 }
-                adapterGroupChatList = new AdapterGroupChatList(getActivity(),groupChats);
+                adapterGroupChatList = new AdapterGroupChatList(getApplicationContext(),groupChats);
                 groupsRv.setAdapter(adapterGroupChatList);
             }
 
@@ -85,11 +112,11 @@ public class GroupChatsFragment extends Fragment {
     private void searchGroupChatsList(String query) {
         groupChats=new ArrayList<>();
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Groups");
+        DatabaseReference reference = FirebaseDatabase.getInstance(firebaseURL).getReference("Groups");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                groupChats.size();
+                groupChats.clear();
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
 
                     //if current user's uid exist in participants lis of group then show that group
@@ -104,7 +131,7 @@ public class GroupChatsFragment extends Fragment {
 
                     }
                 }
-                adapterGroupChatList = new AdapterGroupChatList(getActivity(),groupChats);
+                adapterGroupChatList = new AdapterGroupChatList(getApplicationContext(),groupChats);
                 groupsRv.setAdapter(adapterGroupChatList);
             }
 
@@ -114,4 +141,10 @@ public class GroupChatsFragment extends Fragment {
             }
         });
     }
+
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//
+//    }
+
 }
