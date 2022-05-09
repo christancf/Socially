@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -93,7 +90,6 @@ public class HomeActivity extends AppCompatActivity {
         UsersIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
 
         AddPostIV.setOnClickListener(view -> {
-            //Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), CreatePostActivity.class));
         });
 
@@ -119,9 +115,8 @@ public class HomeActivity extends AppCompatActivity {
 
                     postList.add(modelPost);
 
-                    //adapter
+                    //adapter, set adapter to recycler view
                     adapterPost = new AdapterPost(getApplicationContext(), postList);
-                    //set adapter to recycler view
                     recyclerView.setAdapter(adapterPost);
                 }
             }
@@ -152,9 +147,8 @@ public class HomeActivity extends AppCompatActivity {
                         postList.add(modelPost);
                     }
 
-                    //adapter
+                    //adapter, set adapter to recycler view
                     adapterPost = new AdapterPost(getApplicationContext(), postList);
-                    //set adapter to recycler view
                     recyclerView.setAdapter(adapterPost);
                 }
             }
