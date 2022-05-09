@@ -211,7 +211,12 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         holder.shareLayoutLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Share", Toast.LENGTH_SHORT).show();
+                String sharebody = "Check out this post I found on Socially" + "\n\n" + postContent;
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Subject here");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, sharebody + "\nhttps://play.google.com/store/apps/details?id=" + context.getPackageName());
+                context.startActivity(Intent.createChooser(shareIntent, "Share Via"));
             }
         });
 
@@ -226,6 +231,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
         });
 
     }
+
     //show dialog options
     private void showPostOptions(View view, boolean check, String postID, String postImage) {
         final Dialog dialog = new Dialog(view.getContext());

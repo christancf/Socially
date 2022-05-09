@@ -22,6 +22,10 @@
             android:exported="false"
             android:theme="@style/Theme.Socially.whiteActionBar" />
         <activity
+            android:name=".GroupChatsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".EditPostActivity"
             android:exported="false" />
         <activity
