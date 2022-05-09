@@ -13,7 +13,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/header">
+            android:id="@+id/header"
+            tools:ignore="UselessParent">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar"
@@ -63,7 +64,7 @@
                             android:id="@+id/rel_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center|left">
+                            android:gravity="center|start">
 
                             <ImageView
                                 android:id="@+id/backArrow"
@@ -79,19 +80,21 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:layout_marginStart="20dp"
-                                android:layout_toRightOf="@+id/backArrow"
+                                android:layout_toEndOf="@+id/backArrow"
                                 android:text=""
                                 android:fontFamily="@font/poppins_semibold"
                                 android:textColor="@color/white"
-                                android:textSize="25sp" />
+                                android:textSize="25sp"
+                                tools:ignore="RelativeOverlap" />
 
                             <ImageView
                                 android:id="@+id/chat_icon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                app:srcCompat="@drawable/ic_chat_outline"
-                                android:layout_toLeftOf="@+id/moreOptionsIV"
-                                android:layout_centerInParent="true" />
+                                android:layout_centerInParent="true"
+                                android:layout_marginEnd="10dp"
+                                android:layout_toStartOf="@+id/moreOptionsIV"
+                                app:srcCompat="@drawable/ic_chat_outline" />
 
                             <ImageView
                                 android:id="@+id/moreOptionsIV"

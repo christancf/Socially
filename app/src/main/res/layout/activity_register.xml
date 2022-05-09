@@ -11,7 +11,8 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
         <LinearLayout
             android:id="@+id/emailLL"
             android:orientation="horizontal"
@@ -29,7 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="Email Address"
+                    android:hint="@string/txt_email_reg"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -50,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="Password"
+                    android:hint="@string/txt_password_reg"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -70,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:hint="Confirm Password"
+                    android:hint="@string/txt_confirm_password_reg"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
@@ -87,7 +88,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/slash_button"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Register"
+                android:text="@string/btn_register"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

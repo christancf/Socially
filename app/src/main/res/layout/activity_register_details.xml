@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginTop="48dp"
-        android:text="What's your name"
+        android:text="@string/what_s_your_name_reg"
         android:textSize="20sp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:hint="First Name"
+            android:hint="@string/txt_first_name"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
-            android:hint="Last Name"
+            android:hint="@string/txt_last_name"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginTop="48dp"
-        android:text="What's your date of birth?"
+        android:text="@string/what_s_your_date_of_birth_reg"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
         android:layout_marginBottom="20dp"
-        android:text="What's your gender?"
+        android:text="@string/what_s_your_gender_reg"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/genderRL"
@@ -124,11 +124,12 @@
             android:id="@+id/femaleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="12dp"
 
-            android:text="Female"
-            android:textColor="@color/black" />
+            android:text="@string/txt_female"
+            android:textColor="@color/black"
+            tools:ignore="RelativeOverlap" />
 
         <View
             android:id="@+id/divider2"
@@ -143,9 +144,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divider2"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="12dp"
-            android:text="Male"
+            android:text="@string/txt_male"
             android:textColor="@color/black" />
 
         <View
@@ -161,9 +162,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/divider3"
-            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
             android:layout_marginTop="12sp"
-            android:text="Prefer Not to Say"
+            android:text="@string/txt_prefer_not_to_say"
             android:textColor="@color/black" />
 
         <View
