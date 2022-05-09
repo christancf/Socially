@@ -84,16 +84,16 @@ public class CreatePostActivity extends AppCompatActivity {
     //progress bar
     ProgressDialog pd;
 
-    ActivityResultLauncher activityResultLauncher;
-    ActivityResultLauncher activityResultLauncher2;
+    ActivityResultLauncher<String> activityResultLauncherGallery;
+    ActivityResultLauncher<Intent> activityResultLauncherCamera;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
-        activityResultLauncher = activityLauncher();
-        activityResultLauncher2 = activityLauncherGallery();
+        activityResultLauncherCamera = activityLauncherCamera();
+        activityResultLauncherGallery = activityLauncherGallery();
 
         //init views
         closeIV = findViewById(R.id.btn_close);
@@ -585,22 +585,17 @@ public class CreatePostActivity extends AppCompatActivity {
         image_rui = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //intent.putExtra(MediaStore.EXTRA_OUTPUT, image_rui);
-        //startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
-        activityResultLauncher.launch(intent);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, image_rui);
+        activityResultLauncherCamera.launch(intent);
 
 
     }
 
-    private ActivityResultLauncher activityLauncher() {
+    private ActivityResultLauncher activityLauncherCamera() {
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if(result.getResultCode() == RESULT_OK && result.getData() != null){
-                        Bundle bundle = result.getData().getExtras();
-                        System.out.println(bundle);
-                        Bitmap bitmap = (Bitmap) bundle.get("data");
-                        postContentImageIV.setImageBitmap(bitmap);
-
+                        postContentImageIV.setImageURI(image_rui);
                     }
                 });
         return activityResultLauncher;
@@ -609,20 +604,15 @@ public class CreatePostActivity extends AppCompatActivity {
     private ActivityResultLauncher activityLauncherGallery() {
         ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
                 uri -> {
-                    postContentImageIV.setImageURI(uri);
                     image_rui = uri;
-                    System.out.println(uri);
+                    postContentImageIV.setImageURI(uri);
                 });
         return mGetContent;
 
     }
 
     private void pickFromGalley() {
-        //intent to pick image from gallery
-        //Intent intent = new Intent(Intent.ACTION_PICK);
-       // intent.setType("image/*");
-        activityResultLauncher2.launch("image/*");
-        //startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+        activityResultLauncherGallery.launch("image/*");
     }
 
     private boolean checkStoragePermission() {

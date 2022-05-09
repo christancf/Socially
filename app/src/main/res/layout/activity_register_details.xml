@@ -61,18 +61,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/textView11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="48dp"
-        android:text="@string/what_s_your_date_of_birth_reg"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstNameTIL" />
-
-    <TextView
         android:id="@+id/genderTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -81,6 +69,7 @@
         android:text="@string/what_s_your_gender_reg"
         android:textColor="@color/black"
         android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/lastNameTIL"
         app:layout_constraintBottom_toTopOf="@+id/genderRL"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -89,7 +78,7 @@
         android:id="@+id/genderRL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="80dp"
         app:layout_constraintBottom_toTopOf="@id/register_details_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -181,7 +170,7 @@
         android:id="@+id/register_details_btn"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginBottom="34dp"
+        android:layout_marginBottom="70dp"
         android:layout_marginHorizontal="60dp"
         android:background="@drawable/slash_button"
         android:fontFamily="@font/poppins"

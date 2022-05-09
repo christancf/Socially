@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
@@ -280,6 +281,8 @@ public class ProfileActivity extends AppCompatActivity {
         LinearLayout blockedUsers = dialog.findViewById(R.id.blockedUsersLL);
         LinearLayout logOut = dialog.findViewById(R.id.logOutLL);
 
+        editProfile.setVisibility(View.GONE);
+        blockedUsers.setVisibility(View.GONE);
         editProfile.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Edit Profile", Toast.LENGTH_SHORT).show());
         blockedUsers.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Blocked Users", Toast.LENGTH_SHORT).show());
         logOut.setOnClickListener(view -> {
@@ -309,6 +312,8 @@ public class ProfileActivity extends AppCompatActivity {
             dialog.cancel();
         });
         uploadCover.setOnClickListener(view -> uploadCoverPicture());
+        removeProfile.setVisibility(View.GONE);
+        removeCover.setVisibility(View.GONE);
         removeProfile.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "remove profile", Toast.LENGTH_SHORT).show());
         removeCover.setOnClickListener(view -> Toast.makeText(getApplicationContext(), "Remove Cover", Toast.LENGTH_SHORT).show());
 
@@ -393,10 +398,6 @@ public class ProfileActivity extends AppCompatActivity {
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if(result.getResultCode() == RESULT_OK && result.getData() != null){
-//                        Bundle bundle = result.getData().getExtras();
-//                        System.out.println(bundle);
-//                        Bitmap bitmap = (Bitmap) bundle.get("data");
-//                        profileImageIV.setImageBitmap(bitmap);
                         uploadImage(image_uri);
                     }
                 });
@@ -538,41 +539,4 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.post_menu, menu);
-//
-//        MenuItem menuItem = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) menuItem.getActionView();
-//        searchView.setQueryHint("Search post...");
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                if(!TextUtils.isEmpty(query)) {
-//                    searchMyPosts(query);
-//                } else {
-//                    loadMyPosts();
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                if(!TextUtils.isEmpty(newText)) {
-//                    searchMyPosts(newText);
-//                } else {
-//                    loadMyPosts();
-//                }
-//                return false;
-//            }
-//        });
-//
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        return super.onOptionsItemSelected(item);
-//    }
  }
