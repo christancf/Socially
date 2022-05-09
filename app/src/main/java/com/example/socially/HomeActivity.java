@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,9 @@ public class HomeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     List<ModelPost> postList;
     AdapterPost adapterPost;
+
+    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
+    String userProfilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         ChatIV = findViewById(R.id.chat);
         ProfileIV = findViewById(R.id.profile);
 
+        setupUserProfileImage();
         //recycler view
         recyclerView = findViewById(R.id.post_recycler_view);
         LinearLayoutManager layoutManager= new LinearLayoutManager(this);
@@ -87,7 +90,6 @@ public class HomeActivity extends AppCompatActivity {
         UsersIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
 
         AddPostIV.setOnClickListener(view -> {
-            //Toast.makeText(getApplicationContext(), "Add Post", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(getApplicationContext(), CreatePostActivity.class));
         });
 
@@ -102,7 +104,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void loadPosts() {
         //path of all posts
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
         //get all data from this ref
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -113,9 +115,8 @@ public class HomeActivity extends AppCompatActivity {
 
                     postList.add(modelPost);
 
-                    //adapter
+                    //adapter, set adapter to recycler view
                     adapterPost = new AdapterPost(getApplicationContext(), postList);
-                    //set adapter to recycler view
                     recyclerView.setAdapter(adapterPost);
                 }
             }
@@ -131,7 +132,7 @@ public class HomeActivity extends AppCompatActivity {
     private void searchPosts(String searchQuery) {
 
         //path of all posts
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
         //get all data from this ref
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -146,9 +147,8 @@ public class HomeActivity extends AppCompatActivity {
                         postList.add(modelPost);
                     }
 
-                    //adapter
+                    //adapter, set adapter to recycler view
                     adapterPost = new AdapterPost(getApplicationContext(), postList);
-                    //set adapter to recycler view
                     recyclerView.setAdapter(adapterPost);
                 }
             }
@@ -207,7 +207,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 if(!TextUtils.isEmpty(newText)) {
@@ -220,5 +219,29 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void setupUserProfileImage() {
+        DatabaseReference db = FirebaseDatabase.getInstance(firebaseURL).getReference("Users");
+        Query query = db.orderByChild("uid").equalTo(mAuth.getCurrentUser().getUid());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                for(DataSnapshot ds: snapshot.getChildren()) {
+                    userProfilePicture = "" + ds.child("profileImage").getValue();
+                }
+                try {
+                    Picasso.get().load(userProfilePicture).into(ProfileIV);
+                }catch (Exception e){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

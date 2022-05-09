@@ -14,11 +14,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="All Might"
         android:id="@+id/username"
-        android:layout_toRightOf="@id/userImage"
+        android:layout_toEndOf="@id/userImage"
         android:textColor="@color/black"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
         android:textSize="17sp" />
 </RelativeLayout>

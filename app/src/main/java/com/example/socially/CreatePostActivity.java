@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -39,7 +40,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -63,10 +66,13 @@ public class CreatePostActivity extends AppCompatActivity {
 
     //views
     CircleImageView profilePictureCIV;
-    TextView userNameTV;
+    TextView userNameTV, actionBarTitle, savePost;
     EditText postContentET;
     ImageView postContentImageIV, cameraIV, galleryIV, closeIV;
     Button publishPostBtn;
+
+    //info of the post to be edited
+    String editContent, editPostImage;
 
     //user info
     String userFirstName, userLastName, userEmail, userId, userProfilePicture;
@@ -89,6 +95,18 @@ public class CreatePostActivity extends AppCompatActivity {
         activityResultLauncher = activityLauncher();
         activityResultLauncher2 = activityLauncherGallery();
 
+        //init views
+        closeIV = findViewById(R.id.btn_close);
+        profilePictureCIV = findViewById(R.id.civ_profile_picture);
+        userNameTV = findViewById(R.id.tv_user_name);
+        cameraIV = findViewById(R.id.iv_camera);
+        galleryIV = findViewById(R.id.iv_gallery);
+        publishPostBtn = findViewById(R.id.btn_publish_post);
+        actionBarTitle = findViewById(R.id.tv_actionbar_title);
+        postContentET = findViewById(R.id.et_post_content);
+        postContentImageIV = findViewById(R.id.iv_post_content_image);
+        savePost = findViewById(R.id.tv_save_post);
+
         //init permission arrays
         cameraPermissions = new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -98,9 +116,23 @@ public class CreatePostActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         checkUserStatus();
 
+        //get info of the editPost
+        Intent intent = getIntent();
+        String isUpdateKey = "" + intent.getStringExtra("key");
+        String editPostID = "" + intent.getStringExtra("editPostID");
+
+        if(isUpdateKey.equals("editPost")) {
+            actionBarTitle.setText("Edit Post");
+            //publishPostBtn.setVisibility(View.GONE);
+            publishPostBtn.setText("Save");
+            loadPostData(editPostID);
+        } else {
+            //savePost.setVisibility(View.GONE);
+        }
+
         //get info of current user
         userDbRef = FirebaseDatabase.getInstance(firebaseURL).getReference("Users");
-        Query query = userDbRef.orderByChild("email").equalTo(userEmail);
+        Query query = userDbRef.orderByChild("uid").equalTo(firebaseAuth.getCurrentUser().getUid());
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -109,8 +141,14 @@ public class CreatePostActivity extends AppCompatActivity {
                     userLastName = "" + ds.child("lastName").getValue();
                     userEmail = "" + ds.child("email").getValue();
                     userProfilePicture = "" + ds.child("profileImage").getValue();
+                    //System.out.println(userProfilePicture);
                     userNameTV.setText("" + ds.child("firstName").getValue() + " " + ds.child("lastName").getValue());
-                    profilePictureCIV.setImageURI(Uri.parse("" + ds.child("profileImage").getValue()));
+
+                    try{
+                        Picasso.get().load(userProfilePicture).into(profilePictureCIV);
+                    } catch (Exception e) {
+
+                    }
                 }
             }
 
@@ -121,15 +159,11 @@ public class CreatePostActivity extends AppCompatActivity {
 
         });
 
-        //init views
-        closeIV = findViewById(R.id.btn_close);
-        profilePictureCIV = findViewById(R.id.civ_profile_picture);
-        userNameTV = findViewById(R.id.tv_user_name);
-        postContentET = findViewById(R.id.et_post_content);
-        postContentImageIV = findViewById(R.id.iv_post_content_image);
-        cameraIV = findViewById(R.id.iv_camera);
-        galleryIV = findViewById(R.id.iv_gallery);
-        publishPostBtn = findViewById(R.id.btn_publish_post);
+//        try{
+//            Picasso.get().load(Uri.parse(userProfilePicture)).into(profilePictureCIV);
+//        } catch (Exception e) {
+//
+//        }
 
         closeIV.setOnClickListener(view -> startActivity(new Intent(getApplicationContext(), HomeActivity.class)));
 
@@ -145,15 +179,11 @@ public class CreatePostActivity extends AppCompatActivity {
                     Toast.makeText(CreatePostActivity.this, "Write something to post...", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                System.out.println(image_rui);
 
-                if(image_rui == null) {
-                    //post without image
-                    uploadData(postContent, "noImage");
-
+                if(isUpdateKey.equals("editPost")) {
+                    beginUpload(postContent, editPostID);
                 } else {
-                    //post with image
-                    uploadData(postContent, String.valueOf(image_rui));
+                    uploadData(postContent);
                 }
             }
         });
@@ -179,12 +209,245 @@ public class CreatePostActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-       //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
-    private void uploadData(String postContent, String uri) {
+    private void beginUpload(String postContent, String editPostID) {
+        pd.setMessage("Updating Post...");
+        pd.show();
+
+        if(!editPostImage.equals("noImage")) {
+            //with image
+            updateWasWithImage(postContent, editPostID);
+        } else if(postContentImageIV.getDrawable() != null) {
+            //with image
+            updateWithNowImage(postContent, editPostID);
+        } else {
+            updateWithoutImage(postContent, editPostID);
+        }
+    }
+
+    private void updateWithoutImage(String content, String editPostID) {
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //put post info
+        hashMap.put("uid", userId);
+        hashMap.put("firstName", userFirstName);
+        hashMap.put("lastName", userLastName);
+        hashMap.put("email", userEmail);
+        hashMap.put("profileImage", userProfilePicture);
+        //hashMap.put("postID", timeStamp);
+        hashMap.put("postContent", content);
+        hashMap.put("postImage", "noImage");
+        //hashMap.put("publishTime", timeStamp);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
+        ref.child(editPostID)
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        pd.dismiss();
+                        Toast.makeText(CreatePostActivity.this, "Post Updated...", Toast.LENGTH_SHORT).show();
+
+                        postContentET.setText("");
+                        postContentImageIV.setImageURI(null);
+                        image_rui = null;
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(CreatePostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateWithNowImage(String content, String editPostID) {
+
+        String timeStamp = String.valueOf(System.currentTimeMillis());
+        String filePathAndName = "Posts/" + "post_" + timeStamp;
+
+        //get image from ImageView
+        Bitmap bitmap = ((BitmapDrawable)postContentImageIV.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        //image compress
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
+        ref.putBytes(data)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        //image uploaded. getting url
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isSuccessful());
+
+                        String downloadUri = uriTask.getResult().toString();
+                        if(uriTask.isSuccessful()) {
+                            //uploading the received url to database
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            //put post info
+                            hashMap.put("uid", userId);
+                            hashMap.put("firstName", userFirstName);
+                            hashMap.put("lastName", userLastName);
+                            hashMap.put("email", userEmail);
+                            hashMap.put("profileImage", userProfilePicture);
+                            //hashMap.put("postID", timeStamp);
+                            hashMap.put("postContent", content);
+                            hashMap.put("postImage", downloadUri);
+                            //hashMap.put("publishTime", timeStamp);
+
+                            DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
+                            ref.child(editPostID)
+                                    .updateChildren(hashMap)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            pd.dismiss();
+                                            Toast.makeText(CreatePostActivity.this, "Post Updated...", Toast.LENGTH_SHORT).show();
+
+                                            postContentET.setText("");
+                                            postContentImageIV.setImageURI(null);
+                                            image_rui = null;
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            pd.dismiss();
+                                            Toast.makeText(CreatePostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(CreatePostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateWasWithImage(String content, String editPostID) {
+        //post is with image, so have to delete previous image first
+        StorageReference mPictureRef = FirebaseStorage.getInstance().getReferenceFromUrl(editPostImage);
+        mPictureRef.delete()
+                .addOnSuccessListener(unused -> {
+                    //image delete, upload new image
+                    //postImage, postID, name, publishTime
+                    String timeStamp = String.valueOf(System.currentTimeMillis());
+                    String filePathAndName = "Posts/" + "post_" + timeStamp;
+
+                    //get image from ImageView
+                    Bitmap bitmap = ((BitmapDrawable)postContentImageIV.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                    //image compress
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                    byte[] data = baos.toByteArray();
+
+                    StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
+                    ref.putBytes(data)
+                            .addOnSuccessListener(taskSnapshot -> {
+                                //image uploaded. getting url
+                                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                                while (!uriTask.isSuccessful());
+
+                                String downloadUri = uriTask.getResult().toString();
+                                if(uriTask.isSuccessful()) {
+                                    //uploading the received url to database
+
+                                    HashMap<String, Object> hashMap = new HashMap<>();
+                                    //put post info
+                                    hashMap.put("uid", userId);
+                                    hashMap.put("firstName", userFirstName);
+                                    hashMap.put("lastName", userLastName);
+                                    hashMap.put("email", userEmail);
+                                    hashMap.put("profileImage", userProfilePicture);
+                                    //hashMap.put("postID", timeStamp);
+                                    hashMap.put("postContent", content);
+                                    hashMap.put("postImage", downloadUri);
+                                    //hashMap.put("publishTime", timeStamp);
+
+                                    DatabaseReference ref1 = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
+                                    ref1.child(editPostID)
+                                            .updateChildren(hashMap)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused1) {
+                                                    pd.dismiss();
+                                                    Toast.makeText(CreatePostActivity.this, "Post Updated...", Toast.LENGTH_SHORT).show();
+
+                                                    postContentET.setText("");
+                                                    postContentImageIV.setImageURI(null);
+                                                    image_rui = null;
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    pd.dismiss();
+                                                    Toast.makeText(CreatePostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    pd.dismiss();
+                                    Toast.makeText(CreatePostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        pd.dismiss();
+                        Toast.makeText(CreatePostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void loadPostData(String editPostID) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts");
+        Query fquery = databaseReference.orderByChild("postID").equalTo(editPostID);
+        fquery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    //get data
+                    editContent = "" + ds.child("postContent").getValue();
+                    editPostImage = "" + ds.child("postImage").getValue();
+
+                    //set content
+                    postContentET.setText(editContent);
+
+                    //set image
+                    if(!editPostImage.equals("noImage")) {
+                        try{
+                            Picasso.get().load(editPostImage).into(postContentImageIV);
+                        } catch (Exception e) {}
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+    }
+
+    private void uploadData(String postContent) {
         pd.setMessage("Publishing post");
         pd.show();
 
@@ -193,10 +456,19 @@ public class CreatePostActivity extends AppCompatActivity {
 
         String filePathAndName = "Posts/" + "post_" + timeStamp;
 
-        if(!uri.equals("noImage")) {
+        if(postContentImageIV.getDrawable() != null) {
+
+            //get image from ImageView
+            Bitmap bitmap = ((BitmapDrawable)postContentImageIV.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+            //image compress
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            byte[] data = baos.toByteArray();
+
             //post with image
             StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
-            ref.putFile(Uri.parse(uri))
+            ref.putBytes(data)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -247,7 +519,6 @@ public class CreatePostActivity extends AppCompatActivity {
                                                 Toast.makeText(CreatePostActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                                             }
                                         });
-
                             }
 
                         }

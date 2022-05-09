@@ -42,7 +42,7 @@
     <string name="txt_email_forgot_pw">Enter your email address</string>
     <string name="btn_reset_password">Reset Password</string>
     <string name="txt_login_header">Login</string>
-    <string name="txt_email_phone_login">Email Address/Phone Number</string>
+    <string name="txt_email_login">Email Address</string>
     <string name="txt_password_login">Password</string>
     <string name="txt_keep_me_signed_in">Keep me signed in</string>
     <string name="btn_forgot_pw_login">Forgot Password?</string>
@@ -133,5 +133,17 @@
 
     <string name="tv_user_name">User Name</string>
     <string name="tv_post_content_edit">Post Content</string>
+    <string name="txt_write_a_comment">write a comment...</string>
+    <string name="iv_submit_comment">submit comment</string>
+    <string name="profile_cover_image">cover image</string>
+    <string name="profile_up_arrow">up arrow</string>
+    <string name="profile_more_options">more options</string>
+    <string name="txt_confirm_password_reg">Confirm Password</string>
+    <string name="what_s_your_name_reg">What\'s your name</string>
+    <string name="what_s_your_date_of_birth_reg">What\'s your date of birth?</string>
+    <string name="what_s_your_gender_reg">What\'s your gender?</string>
+    <string name="profile_get_image_camera">Camera</string>
+    <string name="profile_get_image_gallery">Gallery</string>
+    <string name="tv_delete_post">Delete Post</string>
 
 </resources>

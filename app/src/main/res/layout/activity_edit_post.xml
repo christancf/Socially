@@ -58,6 +58,12 @@
                         android:text="@string/tv_save_post"
                         android:textColor="@color/btn_orange"
                         android:textSize="16sp" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:shadowColor="@null"
+                        />
 
                 </RelativeLayout>
 

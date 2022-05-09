@@ -104,7 +104,6 @@ public class ChatlistActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.createGroup) {
-            //change to groupcreateactivity
             startActivity(new Intent(this, GroupCreateActivity.class));
         }
 
