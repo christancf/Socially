@@ -3,6 +3,7 @@ package com.example.socially;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
@@ -16,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.socially.adapters.CommentAdapter;
+import com.example.socially.models.ModelComment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
@@ -30,7 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CommentActivity extends AppCompatActivity {
     ActionBar actionBar;
@@ -41,7 +46,10 @@ public class CommentActivity extends AppCompatActivity {
     //Progress Dialog
     ProgressDialog progressDialog;
 
-    String postID, userProfilePicture, userName;
+    String postID, userProfilePicture, uFName, uLName;
+
+    List<ModelComment> commentList;
+    CommentAdapter commentAdapter;
 
     FirebaseAuth mAuth;
     FirebaseUser user;
@@ -61,6 +69,33 @@ public class CommentActivity extends AppCompatActivity {
         setupUserProfileImage();
 
         commentBtnIV.setOnClickListener(view -> postComment());
+
+        loadComments();
+    }
+
+    private void loadComments() {
+        commentRV.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        commentList = new ArrayList<>();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL)
+                                    .getReference("Posts").child(postID).child("Comments");
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                commentList.clear();
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    ModelComment modelComment = ds.getValue(ModelComment.class);
+
+                    commentList.add(modelComment);
+                    commentAdapter = new CommentAdapter(getApplicationContext(), commentList);
+                    commentRV.setAdapter(commentAdapter);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void postComment() {
@@ -75,8 +110,7 @@ public class CommentActivity extends AppCompatActivity {
         }
 
         String timeStamp = String.valueOf(System.currentTimeMillis());
-        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL)
-                                    .getReference("Posts").child(postID).child("Comments");
+        DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Posts").child(postID).child("Comments");
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("cid", timeStamp);
@@ -84,7 +118,8 @@ public class CommentActivity extends AppCompatActivity {
         hashMap.put("timestamp", timeStamp);
         hashMap.put("uid", user.getUid());
         hashMap.put("uDp", userProfilePicture);
-        hashMap.put("uName", userName);
+        hashMap.put("uFName", uFName);
+        hashMap.put("uLName", uLName);
 
         ref.child(timeStamp).setValue(hashMap)
                 .addOnSuccessListener(unused -> {
@@ -134,7 +169,8 @@ public class CommentActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot ds: snapshot.getChildren()) {
                     userProfilePicture = "" + ds.child("profileImage").getValue();
-                    userName = "" + ds.child("firstName") + " " +ds.child("lastName");
+                    uFName = "" + ds.child("firstName").getValue();
+                    uLName = " " +ds.child("lastName").getValue();
                 }
                 try {
                     Picasso.get().load(userProfilePicture).into(userImageIV);

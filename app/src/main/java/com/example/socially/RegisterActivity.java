@@ -104,13 +104,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void registerUser(String email, String password) {
         progressDialog.show();
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
-                        //Toast.makeText(getApplicationContext(), "Registration Successful", Toast.LENGTH_SHORT).show();
-
                         String uid = user.getUid();
 
                         HashMap<Object, String> hashMap = new HashMap<>();

@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.socially.notifications.Token;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -70,10 +71,6 @@ public class ProfileActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 200;
 
-    //image pick constants
-    private static final int IMAGE_PICK_CAMERA_CODE = 300;
-    private static final int IMAGE_PICK_GALLERY_CODE = 400;
-
     //permissions array
     String[] cameraPermissions;
     String[] storagePermissions;
@@ -93,9 +90,10 @@ public class ProfileActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference db;
-    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
+    private final String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    ActivityResultLauncher activityResultLauncherCamera, activityResultLauncherGallery;
+    ActivityResultLauncher<String> activityResultLauncherGallery;
+    ActivityResultLauncher<Intent> activityResultLauncherCamera;
 
     FirebaseUser user;
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -406,9 +404,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void uploadImage(Uri image_uri) {
+        if(image_uri == null) return;
         progressDialog.show();
         String filePathAndName = storagePath + "" + checkProfileOrCover + "_" + user.getUid();
         StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
+
 
         ref.putFile(image_uri)
                 .addOnSuccessListener(taskSnapshot -> {
