@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.socially.GroupChatsActivity;
 import com.example.socially.GroupCreateActivity;
 import com.example.socially.ModelUser;
 import com.example.socially.OtherUserProfileActivity;
@@ -105,6 +106,11 @@ public class ChatlistActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.createGroup) {
             startActivity(new Intent(this, GroupCreateActivity.class));
         }
+
+        if(item.getItemId() == R.id.nav_more) {
+            startActivity(new Intent(this, GroupChatsActivity.class));
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
