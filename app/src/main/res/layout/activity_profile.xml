@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_clr"
     tools:context=".ProfileActivity">
 
     <RelativeLayout
@@ -36,6 +37,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@color/background_clr"
+                        android:contentDescription="@string/profile_cover_image"
                         android:scaleType="centerCrop"/>
 
                     <LinearLayout
@@ -63,7 +65,7 @@
                             android:id="@+id/rel_layout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center|left">
+                            android:gravity="center|start">
 
                             <ImageView
                                 android:id="@+id/backArrow"
@@ -71,6 +73,7 @@
                                 android:layout_height="32dp"
                                 android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
+                                android:contentDescription="@string/profile_up_arrow"
                                 android:src="@drawable/ic_baseline_arrow_back_24_white" />
 
                             <TextView
@@ -79,11 +82,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:layout_marginStart="20dp"
-                                android:layout_toRightOf="@+id/backArrow"
+                                android:layout_toEndOf="@+id/backArrow"
                                 android:text=""
                                 android:fontFamily="@font/poppins_semibold"
                                 android:textColor="@color/white"
-                                android:textSize="25sp" />
+                                android:textSize="25sp"
+                                tools:ignore="RelativeOverlap" />
 
                             <ImageView
                                 android:id="@+id/moreOptionsIV"
@@ -91,6 +95,7 @@
                                 android:layout_height="30dp"
                                 android:layout_marginEnd="10dp"
                                 android:layout_centerInParent="true"
+                                android:contentDescription="@string/profile_more_options"
                                 android:src="@drawable/ic_baseline_more_vert_24"
                                 android:layout_alignParentEnd="true"/>
                         </RelativeLayout>

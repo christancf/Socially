@@ -15,12 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socially">
         <activity
+            android:name=".EditCommentActivity"
+            android:exported="false" />
+        <activity
             android:name=".GroupCreateActivity"
             android:exported="false" />
         <activity
             android:name=".CommentActivity"
             android:exported="false"
-            android:theme="@style/Theme.Socially.whiteActionBar"/>
+            android:theme="@style/Theme.Socially.whiteActionBar" />
         <activity
             android:name=".EditPostActivity"
             android:exported="false" />
@@ -32,8 +35,7 @@
         <activity
             android:name=".activities.ChatlistActivity"
             android:exported="false"
-            android:theme="@style/Theme.Socially.whiteActionBar"/>
-
+            android:theme="@style/Theme.Socially.whiteActionBar" />
         <activity
             android:name=".CreatePostActivity"
             android:exported="false"
@@ -89,14 +91,17 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <service android:name=".notifications.FirebaseService"
+
+        <service
+            android:name=".notifications.FirebaseService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_SERVICE" />
             </intent-filter>
         </service>
-        <service android:name=".notifications.FirebaseMessaging"
+        <service
+            android:name=".notifications.FirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

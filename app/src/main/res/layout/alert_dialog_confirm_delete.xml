@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/txt_log_out_confirm"
+        android:text="@string/txt_delete_comment_confirmation_msg"
         android:textColor="@color/black"
         android:gravity="center_horizontal"
         android:textSize="20sp"/>
@@ -24,18 +24,18 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/cancelTV"
+            android:id="@+id/comment_delete_cancelTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_log_out_cancel"
+            android:text="@string/btn_delete_comment_cancel"
             android:layout_alignParentStart="true"
             android:textColor="@color/black"
             android:textSize="20sp"/>
         <TextView
-            android:id="@+id/logOutTV"
+            android:id="@+id/comment_delete_confirmTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btn_log_out"
+            android:text="@string/btn_delete_comment_delete"
             android:layout_alignParentEnd="true"
             android:textColor="@color/btn_orange"
             android:textSize="20sp"

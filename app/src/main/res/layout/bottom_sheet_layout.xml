@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Edit Profile"
+            android:text="@string/btn_edit_profile"
             android:layout_marginStart="30dp"
             android:textSize="16sp"
             android:textColor="@color/black"/>
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Blocked Users"
+            android:text="@string/btn_blocked_users"
             android:layout_marginStart="30dp"
             android:textSize="16sp"
             android:textColor="@color/black"/>
@@ -67,15 +67,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:src="@drawable/ic_logout" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:text="Log Out"
-            android:layout_marginLeft="30dp"
+            android:text="@string/btn_log_out"
+            android:layout_marginStart="30dp"
             android:textSize="16sp"
             android:textColor="@color/black"/>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,7 +18,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_marginEnd="50dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            tools:ignore="UseCompoundDrawables">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -25,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Camera"
+                android:text="@string/profile_get_image_camera"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
         </LinearLayout>
@@ -36,7 +38,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_toEndOf="@id/cameraOptionLL"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            tools:ignore="UseCompoundDrawables">
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Gallery"
+                android:text="@string/profile_get_image_gallery"
                 android:textColor="@color/black"
                 android:textSize="16sp"/>
         </LinearLayout>
