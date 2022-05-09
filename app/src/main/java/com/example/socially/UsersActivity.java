@@ -1,12 +1,5 @@
 package com.example.socially;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -14,7 +7,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,8 +32,6 @@ public class UsersActivity extends AppCompatActivity {
 
     private UsersAdapter.RecyclerViewClickListener listener;
 
-    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
-
     ActionBar actionBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +40,11 @@ public class UsersActivity extends AppCompatActivity {
 
         //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
-        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Users</font>"));
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        assert actionBar != null;
+        actionBar.setTitle("Users");
         //Setting up a back arrow
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_baseline_arrow_back_24);
-        upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
-        actionBar.setHomeAsUpIndicator(upArrow);
 
         userList = new ArrayList<>();
         getAllUsers();
@@ -64,6 +57,7 @@ public class UsersActivity extends AppCompatActivity {
         //get current user
         FirebaseUser cUser = FirebaseAuth.getInstance().getCurrentUser();
         //reference to "Users" collection
+        String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
         DatabaseReference ref = FirebaseDatabase.getInstance(firebaseURL).getReference("Users");
 
         //get all data from the "Users" collection

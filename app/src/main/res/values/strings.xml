@@ -133,5 +133,7 @@
 
     <string name="tv_user_name">User Name</string>
     <string name="tv_post_content_edit">Post Content</string>
+    <string name="txt_write_a_comment">write a comment...</string>
+    <string name="iv_submit_comment">submit comment</string>
 
 </resources>

@@ -7,21 +7,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.socially.adapters.CommentAdapter;
 import com.example.socially.models.ModelComment;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -53,7 +45,7 @@ public class CommentActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser user;
-    private String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
+    private final String firebaseURL = "https://socially-14fd2-default-rtdb.asia-southeast1.firebasedatabase.app";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +79,7 @@ public class CommentActivity extends AppCompatActivity {
                     ModelComment modelComment = ds.getValue(ModelComment.class);
 
                     commentList.add(modelComment);
-                    commentAdapter = new CommentAdapter(getApplicationContext(), commentList);
+                    commentAdapter = new CommentAdapter(getApplicationContext(), commentList, postID);
                     commentRV.setAdapter(commentAdapter);
                 }
             }
@@ -174,7 +166,7 @@ public class CommentActivity extends AppCompatActivity {
                 }
                 try {
                     Picasso.get().load(userProfilePicture).into(userImageIV);
-                }catch (Exception e){
+                }catch (Exception ignored){
 
                 }
             }
@@ -188,7 +180,8 @@ public class CommentActivity extends AppCompatActivity {
     private void setActionBar(){
         //Setting up a transparent actionbar
         actionBar = getSupportActionBar();
-        actionBar.setTitle(Html.fromHtml("<font color='#000000'>Comments</font>"));
+        assert actionBar != null;
+        actionBar.setTitle("Comments");
 
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
