@@ -393,10 +393,6 @@ public class ProfileActivity extends AppCompatActivity {
         ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if(result.getResultCode() == RESULT_OK && result.getData() != null){
-//                        Bundle bundle = result.getData().getExtras();
-//                        System.out.println(bundle);
-//                        Bitmap bitmap = (Bitmap) bundle.get("data");
-//                        profileImageIV.setImageBitmap(bitmap);
                         uploadImage(image_uri);
                     }
                 });
