@@ -1,7 +1,6 @@
 package com.example.socially.adapters;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -18,8 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.socially.EditCommentActivity;
-import com.example.socially.ModelUser;
 import com.example.socially.R;
 import com.example.socially.models.ModelComment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,11 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.sql.Date;
-import java.text.DateFormat;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -77,17 +70,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         holder.commentTV.setText(comment);
 
+        holder.commentTimeTV.setVisibility(View.GONE);
         if(!uid.equals(FirebaseAuth.getInstance().getUid())){
             holder.editTV.setVisibility(View.GONE);
             holder.deleteTV.setVisibility(View.GONE);
         }else{
-            holder.editTV.setOnClickListener(view -> {
-                Intent intent = new Intent(context, EditCommentActivity.class);
-                intent.putExtra("commentID", cid);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
-            });
-
+            holder.editTV.setVisibility(View.GONE);
             holder.deleteTV.setOnClickListener(view -> showDeleteConfirmDialog(view, cid));
         }
 
@@ -146,7 +134,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         CircleImageView userImageCIV;
-        TextView usernameTV, commentTV, editTV, deleteTV;
+        TextView usernameTV, commentTV, editTV, deleteTV, commentTimeTV;
         RelativeLayout parentLayoutRL;
 
         public ViewHolder(@NonNull View itemView) {
@@ -157,6 +145,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             editTV = itemView.findViewById(R.id.row_comment_edit);
             deleteTV = itemView.findViewById(R.id.row_comment_delete);
             parentLayoutRL = itemView.findViewById(R.id.row_comment_parentLayout);
+            commentTimeTV = itemView.findViewById(R.id.row_comment_time);
         }
     }
 }

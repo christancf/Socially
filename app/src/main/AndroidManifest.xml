@@ -15,9 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Socially">
         <activity
-            android:name=".EditCommentActivity"
-            android:exported="false" />
-        <activity
             android:name=".GroupCreateActivity"
             android:exported="false" />
         <activity

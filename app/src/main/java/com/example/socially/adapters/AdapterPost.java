@@ -220,6 +220,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.MyHolder> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, OtherUserProfileActivity.class);
                 intent.putExtra("uid", uid);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             }
         });
